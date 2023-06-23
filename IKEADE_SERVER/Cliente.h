@@ -8,11 +8,14 @@
 typedef struct {
 	int dni;
 	char* nombre;
+	char* contrasena;
 	char* telefono;
 
 }Cliente;
 
-Cliente* crearCliente(int dni, const char* nombre, const char* telefono);
+Cliente* crearCliente(int dni, const char* nombre, const char* contrasena, const char* telefono);
+int iniciarSesion(const char* filename);
+void registrarCliente(Cliente** clientes, int* numClientes);
 void pedirCliente(Cliente** cliente);
 void imprimirCliente(const Cliente* cliente);
 void liberarCliente(Cliente* cliente);

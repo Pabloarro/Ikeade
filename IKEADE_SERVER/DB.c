@@ -49,6 +49,34 @@ int insertarArticulo(Database* database, const Articulo* articulo) {
     return 1;
 }
 
+int modificarArticuloDB(Database* database, int idArticulo, float nuevoPrecio) {
+    char sql[256];
+    snprintf(sql, sizeof(sql), "UPDATE articulos SET precio = %.2f WHERE id = %d", nuevoPrecio, idArticulo);
+
+    char* errMsg;
+    int rc = sqlite3_exec(database->db, sql, NULL, 0, &errMsg);
+    if (rc != SQLITE_OK) {
+        printf("Error modifying article: %s\n", errMsg);
+        sqlite3_free(errMsg);
+        return 0;
+    }
+    return 1;
+}
+
+int eliminarArticulo(Database* database, int idArticulo) {
+    char sql[256];
+    snprintf(sql, sizeof(sql), "DELETE FROM articulos WHERE id = %d", idArticulo);
+
+    char* errMsg;
+    int rc = sqlite3_exec(database->db, sql, NULL, 0, &errMsg);
+    if (rc != SQLITE_OK) {
+        printf("Error deleting article: %s\n", errMsg);
+        sqlite3_free(errMsg);
+        return 0;
+    }
+    return 1;
+}
+
 int insertarListaArticulos(Database* database, const ListaArticulos* listaArticulos) {
     for (int i = 0; i < listaArticulos->cantidad; i++) {
         const Articulo* articulo = listaArticulos->articulos[i];
@@ -65,4 +93,57 @@ int insertarListaArticulos(Database* database, const ListaArticulos* listaArticu
         }
     }
     return 1;
+}
+
+int agregarArticuloCarrito(Database* database, int idCliente, int idArticulo) {
+    char sql[256];
+    snprintf(sql, sizeof(sql), "INSERT INTO carrito (id_cliente, id_articulo) VALUES (%d, %d)", idCliente, idArticulo);
+
+    char* errMsg;
+    int rc = sqlite3_exec(database->db, sql, NULL, 0, &errMsg);
+    if (rc != SQLITE_OK) {
+        printf("Error adding article to cart: %s\n", errMsg);
+        sqlite3_free(errMsg);
+        return 0;
+    }
+    return 1;
+}
+
+int eliminarArticuloCarrito(Database* database, int idCliente, int idArticulo) {
+    char sql[256];
+    snprintf(sql, sizeof(sql), "DELETE FROM carrito WHERE id_cliente = %d AND id_articulo = %d", idCliente, idArticulo);
+
+    char* errMsg;
+    int rc = sqlite3_exec(database->db, sql, NULL, 0, &errMsg);
+    if (rc != SQLITE_OK) {
+        printf("Error removing article from cart: %s\n", errMsg);
+        sqlite3_free(errMsg);
+        return 0;
+    }
+    return 1;
+}
+
+ListaArticulos* obtenerArticulosCarrito(Database* database, int idCliente) {
+    char sql[256];
+    snprintf(sql, sizeof(sql), "SELECT articulos.id, articulos.nombre, articulos.precio FROM articulos JOIN carrito ON articulos.id = carrito.id_articulo WHERE carrito.id_cliente = %d", idCliente);
+
+    sqlite3_stmt* stmt;
+    int rc = sqlite3_prepare_v2(database->db, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        printf("Error retrieving cart items: %s\n", sqlite3_errmsg(database->db));
+        return NULL;
+    }
+
+    ListaArticulos* listaArticulos = crearListaArticulos();
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        int id = sqlite3_column_int(stmt, 0);
+        const unsigned char* nombre = sqlite3_column_text(stmt, 1);
+        float precio = sqlite3_column_double(stmt, 2);
+
+        Articulo* articulo = crearArticulo(id, (const char*)nombre, precio);
+        agregarArticulo(listaArticulos, articulo);
+    }
+
+    sqlite3_finalize(stmt);
+    return listaArticulos;
 }

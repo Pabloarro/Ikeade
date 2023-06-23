@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct{
     int id;
@@ -12,7 +13,8 @@ typedef struct{
 
 Articulo* crearArticulo(int id, const char* nombre, float precio);
 void anyadirArticulo(Articulo** listaArticulos, int* cantidadArticulos, Articulo* nuevoArticulo);
-void eliminarArticulo(Articulo** listaArticulos, int* cantidadArticulos, int id);
+void modificarArticulo(Articulo* articulo, const char* nombre, float precio);
+void eliminarArticuloPorId(Articulo** listaArticulos, int* cantidadArticulos, int id);
 void imprimirArticulo(const Articulo* articulo);
 void liberarArticulo(Articulo* articulo);
 
