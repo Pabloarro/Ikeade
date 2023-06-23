@@ -1,10 +1,3 @@
-/*
- * Cliente.h
- *
- *  Created on: 22 jun 2023
- *      Author: pablo
- */
-
 #ifndef CLIENTE_H_
 #define CLIENTE_H_
 
@@ -17,4 +10,4 @@ struct Cliente {
 void Cliente_getCliente(struct Cliente* cliente, const char* nombre, const char* contrasena, int edad);
 void Cliente_imprimirCliente(const struct Cliente* cliente);
 
-#endif /* CLIENTE_H_ */
+#endif

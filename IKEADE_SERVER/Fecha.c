@@ -1,12 +1,4 @@
-/*
- * Fecha.c
- *
- *  Created on: 22 jun 2023
- *      Author: pablo
- */
-
-
-#include "fecha.h"
+#include "Fecha.h"
 #include <stdio.h>
 
 void Fecha_getFecha(struct Fecha* fecha, int dia, int mes, int anio) {

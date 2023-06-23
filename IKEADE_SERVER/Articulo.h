@@ -1,10 +1,3 @@
-/*
- * Articulo.h
- *
- *  Created on: 22 jun 2023
- *      Author: pablo
- */
-
 #ifndef ARTICULO_H_
 #define ARTICULO_H_
 
@@ -23,4 +16,4 @@ int Articulo_getID(const struct Articulo* articulo);
 float Articulo_getPrecio(const struct Articulo* articulo);
 void Articulo_imprimirArticulo(const struct Articulo* articulo);
 
-#endif /* ARTICULO_H_ */
+#endif

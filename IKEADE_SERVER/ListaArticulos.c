@@ -1,12 +1,4 @@
-/*
- * ListaArticulos.c
- *
- *  Created on: 22 jun 2023
- *      Author: pablo
- */
-
-
-#include "listaArticulos.h"
+#include "ListaArticulos.h"
 #include <stdio.h>
 #include <stdlib.h>
 

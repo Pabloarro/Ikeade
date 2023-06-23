@@ -1,10 +1,4 @@
-/*
- * Cliente.c
- *
- *  Created on: 22 jun 2023
- *      Author: pablo
- */
-#include "cliente.h"
+#include "Cliente.h"
 #include <stdio.h>
 #include <string.h>
 

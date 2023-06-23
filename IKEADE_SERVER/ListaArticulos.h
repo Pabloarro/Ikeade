@@ -1,10 +1,3 @@
-/*
- * ListaArticulos.h
- *
- *  Created on: 22 jun 2023
- *      Author: pablo
- */
-
 #ifndef LISTAARTICULOS_H_
 #define LISTAARTICULOS_H_
 
@@ -27,4 +20,4 @@ struct Articulo* ListaArticulos_ObtenerArticuloMasCaro(const struct ListaArticul
 struct Articulo* ListaArticulos_ObtenerArticuloMasBarato(const struct ListaArticulos* lista);
 void ListaArticulos_OrdenarArticulosPorPrecio(struct ListaArticulos* lista);
 
-#endif /* LISTAARTICULOS_H_ */
+#endif
