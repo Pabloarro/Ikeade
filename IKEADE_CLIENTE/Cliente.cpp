@@ -25,8 +25,11 @@ char menu(){
 char menuAdministrador(){
 	char opcion;
 	cout<<"MENU ADMINISRADOR"<<endl;
-	cout<<"1. "<<endl;
-	cout<<"2. "<<endl;
+	cout<<"1. Crear articulo "<<endl;
+	cout<<"2. Borrar articulo "<<endl;
+	cout<<"3. Modificar articulo"<<endl;
+	cout<<"4. Visualizar ventas"<<endl;
+	cout<<"5. Listar ventas por cliente"<<endl;
 	cout<<"0. Salir"<<endl;
 	cout<<"Elige una opci�n: ";
 	cin>>opcion;
@@ -89,8 +92,9 @@ int main(int argc, char *argv[]) {
 
 	/*EMPIEZA EL PROGRAMA DEL CLIENTE*/
 	char opcion,opcionA,opcionC;
-	char nom[20],con[20],dni[20],tlf;
-	int resul;
+	char nom[20],con[20],dni[20],tlf[20],art[20];
+	int resul,id,precio,stock;
+
 	do{
 		opcion = menu();
 		sprintf(sendBuff,"%c",opcion);
@@ -129,7 +133,22 @@ int main(int argc, char *argv[]) {
 				do{
 					opcionA = menuAdministrador();
 					switch(opcionA){
-						case '1': break;
+						case '1':
+							cout<<"Introduce un id: ";cin>>id;
+							cout<<"Introduce un nombre: ";cin>>art;
+							cout<<"Introduce un precio: ";cin>>precio;
+							cout<<"Introduce el stock: ";cin>>stock;
+							sprintf(sendBuff,"%s",id);
+							send(s, sendBuff, sizeof(sendBuff), 0);
+							sprintf(sendBuff,"%s",art);
+							send(s, sendBuff, sizeof(sendBuff), 0);
+							sprintf(sendBuff,"%s",precio);
+							send(s, sendBuff, sizeof(sendBuff), 0);
+							sprintf(sendBuff,"%s",stock);
+							send(s, sendBuff, sizeof(sendBuff), 0);
+
+
+							break;
 						case '2': break;
 						case '0': break;
 						default: cout<<"La opci�n no es correcta"<<endl;

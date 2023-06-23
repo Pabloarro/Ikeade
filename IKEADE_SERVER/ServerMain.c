@@ -3,6 +3,7 @@
 #include <string.h>
 #include <winsock2.h>
 #include "Cliente.h"
+#include "Articulo.h"
 #define SERVER_IP "127.0.0.1"
 #define SERVER_PORT 6000
 
@@ -65,8 +66,8 @@ int main(int argc, char *argv[]) {
     int fin = 0;
     do {
         char opcion;
-        char nom[20], con[20],dni[20],tlf[20];
-        int resul;
+        char nom[20], con[20],dni[20],tlf[20],art[20];
+        int resul,id,stock,precio;
         do {
             recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
             sscanf(recvBuff, "%c", &opcion);
@@ -90,13 +91,28 @@ int main(int argc, char *argv[]) {
                     sprintf(con, "%s", recvBuff);
                     if (strcmp(nom, "ADMIN") == 0 && strcmp(con, "ADMIN") == 0) {
                         resul = 1;
+                        recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+                         printf(id, "%s", recvBuff);
+                         recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+                         printf(art, "%s", recvBuff);
+                         recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+                         printf(precio, "%s", recvBuff);
+                         recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+                         printf(stock, "%s", recvBuff);
+
+                         Articulo* a =crearArticulo(id, art, precio, stock);
+
                     } else if (strcmp(nom, "CLIENTE") == 0 && strcmp(con, "CLIENTE") == 0) {
                         resul = 2;
+
                     } else {
                         resul = 0;
                     }
                     sprintf(sendBuff, "%d", resul);
                     send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+
+
+
                     break;
                 case '0':
                     fin = 1;

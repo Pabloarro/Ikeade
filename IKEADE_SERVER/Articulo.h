@@ -9,9 +9,10 @@ typedef struct{
     int id;
     char* nombre;
     float precio;
+    int stock;
 } Articulo;
 
-Articulo* crearArticulo(int id, const char* nombre, float precio);
+Articulo* crearArticulo(int id, const char* nombre, float precio,int stock);
 void anyadirArticulo(Articulo** listaArticulos, int* cantidadArticulos, Articulo* nuevoArticulo);
 void modificarArticulo(Articulo* articulo, const char* nombre, float precio);
 void eliminarArticuloPorId(Articulo** listaArticulos, int* cantidadArticulos, int id);
