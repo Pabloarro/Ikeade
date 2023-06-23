@@ -5,18 +5,27 @@ void imprimirFecha(const Fecha* fecha) {
 }
 
 void pedirFecha(Fecha** fecha) {
-    int dia, mes, anio;
+	*fecha = (Fecha*)malloc(sizeof(Fecha));
+	if (*fecha == NULL) {
+		return;
+	}
 
-    printf("Ingrese el día: ");
-    scanf("%d", &dia);
+
+    char diaStr[3];
+    char mesStr[3];
+    char anioStr[5];
+
+    printf("Ingrese el dia: ");
+    fgets(diaStr, sizeof(diaStr), stdin);
+    sscanf(diaStr, "%d", &((*fecha)->dia));
 
     printf("Ingrese el mes: ");
-    scanf("%d", &mes);
+    fgets(mesStr, sizeof(mesStr), stdin);
+    sscanf(mesStr, "%d", &((*fecha)->mes));
 
-    printf("Ingrese el año: ");
-    scanf("%d", &anio);
-
-    *fecha = crearFecha(dia, mes, anio);
+    printf("Ingrese el anio: ");
+    fgets(anioStr, sizeof(anioStr), stdin);
+    sscanf(anioStr, "%d", &((*fecha)->anio));
 }
 
 void liberarFecha(Fecha* fecha) {

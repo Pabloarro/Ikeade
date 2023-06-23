@@ -5,6 +5,8 @@
 #include "Articulo.h"
 #include "Fecha.h"
 #include "ListaArticulos.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 typedef struct {
     Cliente* cliente;

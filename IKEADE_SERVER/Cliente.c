@@ -18,14 +18,21 @@ void pedirCliente(Cliente** cliente) {
     char nombre[100];
     char telefono[20];
 
+    char dniStr[20];
+    char nombreStr[100];
+    char telefonoStr[20];
+
     printf("Ingrese el DNI del cliente: ");
-    scanf("%d", &dni);
+    fgets(dniStr, sizeof(dniStr), stdin);
+    sscanf(dniStr, "%d", &dni);
 
     printf("Ingrese el nombre del cliente: ");
-    scanf(" %[^\n]s", nombre);
+    fgets(nombreStr, sizeof(nombreStr), stdin);
+    sscanf(nombreStr, " %[^\n]s", nombre);
 
     printf("Ingrese el teléfono del cliente: ");
-    scanf(" %[^\n]s", telefono);
+    fgets(telefonoStr, sizeof(telefonoStr), stdin);
+    sscanf(telefonoStr, " %[^\n]s", telefono);
 
     *cliente = crearCliente(dni, nombre, telefono);
 }
