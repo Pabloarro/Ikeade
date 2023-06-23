@@ -1,13 +1,20 @@
 #ifndef CLIENTE_H_
 #define CLIENTE_H_
 
-struct Cliente {
-    char nombre[50];
-    char contrasena[20];
-    int edad;
-};
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-void Cliente_getCliente(struct Cliente* cliente, const char* nombre, const char* contrasena, int edad);
-void Cliente_imprimirCliente(const struct Cliente* cliente);
+typedef struct {
+	int dni;
+	char* nombre;
+	char* telefono;
+
+}Cliente;
+
+Cliente* crearCliente(int dni, const char* nombre, const char* telefono);
+void pedirCliente(Cliente** cliente);
+void imprimirCliente(const Cliente* cliente);
+void liberarCliente(Cliente* cliente);
 
 #endif

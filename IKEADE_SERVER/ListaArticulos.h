@@ -2,22 +2,21 @@
 #define LISTAARTICULOS_H_
 
 #include "Articulo.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-struct Nodo {
-    struct Articulo articulo;
-    struct Nodo* siguiente;
-};
+typedef struct {
+    Articulo** articulos;
+    int cantidad;
+} ListaArticulos;
 
-struct ListaArticulos {
-    struct Nodo* primero;
-};
-
-void ListaArticulos_CrearLista(struct ListaArticulos* lista);
-void ListaArticulos_ImprimirLista(const struct ListaArticulos* lista);
-void ListaArticulos_AnyadirArticulo(struct ListaArticulos* lista, const struct Articulo* articulo);
-void ListaArticulos_EliminarArticulo(struct ListaArticulos* lista, int id);
-struct Articulo* ListaArticulos_ObtenerArticuloMasCaro(const struct ListaArticulos* lista);
-struct Articulo* ListaArticulos_ObtenerArticuloMasBarato(const struct ListaArticulos* lista);
-void ListaArticulos_OrdenarArticulosPorPrecio(struct ListaArticulos* lista);
+ListaArticulos* crearListaArticulos();
+void anyadirListaArticulos(ListaArticulos* lista, Articulo* articulo);
+void eliminarListaArticulos(ListaArticulos* lista, int id);
+Articulo* obtenerArticuloMasCaro(const ListaArticulos* lista);
+Articulo* obtenerArticuloMasBarato(const ListaArticulos* lista);
+void ordenarArticulosPorPrecio(ListaArticulos* lista);
+void imprimirListaArticulos(const ListaArticulos* lista);
+void liberarListaArticulos(ListaArticulos* lista);
 
 #endif

@@ -1,19 +1,19 @@
 #ifndef ARTICULO_H_
 #define ARTICULO_H_
 
-struct Articulo {
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct{
     int id;
     char* nombre;
     float precio;
-};
+} Articulo;
 
-void Articulo_init(struct Articulo* articulo, const int id, const char* nombre, float precio);
-void Articulo_copy(struct Articulo* destino, const struct Articulo* origen);
-void Articulo_destroy(struct Articulo* articulo);
-char* Articulo_getNombre(struct Articulo* articulo);
-void Articulo_setNombre(struct Articulo* articulo, const char* nombre);
-int Articulo_getID(const struct Articulo* articulo);
-float Articulo_getPrecio(const struct Articulo* articulo);
-void Articulo_imprimirArticulo(const struct Articulo* articulo);
+Articulo* crearArticulo(int id, const char* nombre, float precio);
+void anyadirArticulo(Articulo** listaArticulos, int* cantidadArticulos, Articulo* nuevoArticulo);
+void eliminarArticulo(Articulo** listaArticulos, int* cantidadArticulos, int id);
+void imprimirArticulo(const Articulo* articulo);
+void liberarArticulo(Articulo* articulo);
 
 #endif

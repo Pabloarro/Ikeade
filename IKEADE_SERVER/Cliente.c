@@ -1,19 +1,41 @@
 #include "Cliente.h"
-#include <stdio.h>
-#include <string.h>
 
-void Cliente_getCliente(struct Cliente* cliente, const char* nombre, const char* contrasena, int edad) {
-    strncpy(cliente->nombre, nombre, sizeof(cliente->nombre) - 1);
-    strncpy(cliente->contrasena, contrasena, sizeof(cliente->contrasena) - 1);
-    cliente->nombre[sizeof(cliente->nombre) - 1] = '\0';
-    cliente->contrasena[sizeof(cliente->contrasena) - 1] = '\0';
-    cliente->edad = edad;
+Cliente* crearCliente(int dni, const char* nombre, const char* telefono) {
+    Cliente* nuevoCliente = (Cliente*)malloc(sizeof(Cliente));
+    if (nuevoCliente == NULL) {
+        return NULL;
+    }
+
+    nuevoCliente->dni = dni;
+    nuevoCliente->nombre = strdup(nombre);
+    nuevoCliente->telefono = strdup(telefono);
+
+    return nuevoCliente;
 }
 
-void Cliente_imprimirCliente(const struct Cliente* cliente) {
-    printf("Nombre: %s\n", cliente->nombre);
-    printf("Contraseña: %s\n", cliente->contrasena);
-    printf("Edad: %d\n", cliente->edad);
+void pedirCliente(Cliente** cliente) {
+    int dni;
+    char nombre[100];
+    char telefono[20];
+
+    printf("Ingrese el DNI del cliente: ");
+    scanf("%d", &dni);
+
+    printf("Ingrese el nombre del cliente: ");
+    scanf(" %[^\n]s", nombre);
+
+    printf("Ingrese el teléfono del cliente: ");
+    scanf(" %[^\n]s", telefono);
+
+    *cliente = crearCliente(dni, nombre, telefono);
 }
 
+void imprimirCliente(const Cliente* cliente) {
+    printf("DNI: %d, Nombre: %s, Teléfono: %s\n", cliente->dni, cliente->nombre, cliente->telefono);
+}
 
+void liberarCliente(Cliente* cliente) {
+    free(cliente->nombre);
+    free(cliente->telefono);
+    free(cliente);
+}

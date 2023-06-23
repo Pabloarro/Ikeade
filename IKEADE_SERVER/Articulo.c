@@ -1,46 +1,46 @@
 #include "Articulo.h"
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
 
-void Articulo_init(struct Articulo* articulo, const int id, const char* nombre, float precio) {
-    articulo->id = id;
-    articulo->nombre = (char*)malloc((strlen(nombre) + 1) * sizeof(char));
-    strcpy(articulo->nombre, nombre);
-    articulo->precio = precio;
+Articulo* crearArticulo(int id, const char* nombre, float precio) {
+    Articulo* nuevoArticulo = (Articulo*)malloc(sizeof(Articulo));
+    if (nuevoArticulo == NULL) {
+        return NULL;
+    }
+
+    nuevoArticulo->id = id;
+    nuevoArticulo->nombre = nombre;
+    nuevoArticulo->precio = precio;
+
+    return nuevoArticulo;
 }
 
-void Articulo_copy(struct Articulo* destino, const struct Articulo* origen) {
-    destino->id = origen->id;
-    destino->nombre = (char*)malloc((strlen(origen->nombre) + 1) * sizeof(char));
-    strcpy(destino->nombre, origen->nombre);
-    destino->precio = origen->precio;
+void anyadirArticulo(Articulo** listaArticulos, int* cantidadArticulos, Articulo* nuevoArticulo) {
+    *listaArticulos = (Articulo*)realloc(*listaArticulos, (*cantidadArticulos + 1) * sizeof(Articulo));
+    (*listaArticulos)[*cantidadArticulos] = *nuevoArticulo;
+    (*cantidadArticulos)++;
 }
 
-void Articulo_destroy(struct Articulo* articulo) {
-    free(articulo->nombre);
+void eliminarArticulo(Articulo** listaArticulos, int* cantidadArticulos, int id) {
+    int indice = -1;
+    for (int i = 0; i < *cantidadArticulos; i++) {
+        if ((*listaArticulos)[i].id == id) {
+            indice = i;
+            break;
+        }
+    }
+
+    if (indice != -1) {
+        for (int i = indice; i < (*cantidadArticulos - 1); i++) {
+            (*listaArticulos)[i] = (*listaArticulos)[i + 1];
+        }
+        (*cantidadArticulos)--;
+        *listaArticulos = (Articulo*)realloc(*listaArticulos, (*cantidadArticulos) * sizeof(Articulo));
+    }
 }
 
-char* Articulo_getNombre(struct Articulo* articulo) {
-    return articulo->nombre;
+void imprimirArticulo(const Articulo* articulo) {
+    printf("ID: %d, Nombre: %s, Precio: %.2f\n", articulo->id, articulo->nombre, articulo->precio);
 }
 
-void Articulo_setNombre(struct Articulo* articulo, const char* nombre) {
-    free(articulo->nombre);
-    articulo->nombre = (char*)malloc((strlen(nombre) + 1) * sizeof(char));
-    strcpy(articulo->nombre, nombre);
-}
-
-int Articulo_getID(const struct Articulo* articulo) {
-    return articulo->id;
-}
-
-float Articulo_getPrecio(const struct Articulo* articulo) {
-    return articulo->precio;
-}
-
-void Articulo_imprimirArticulo(const struct Articulo* articulo) {
-    printf("Id: %d\n", articulo->id);
-    printf("Nombre: %s\n", articulo->nombre);
-    printf("Precio: %.2f\n", articulo->precio);
+void liberarArticulo(Articulo* articulo) {
+    free(articulo);
 }

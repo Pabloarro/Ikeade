@@ -1,122 +1,94 @@
 #include "ListaArticulos.h"
-#include <stdio.h>
-#include <stdlib.h>
 
-void ListaArticulos_CrearLista(struct ListaArticulos* lista) {
-    lista->primero = NULL;
+ListaArticulos* crearListaArticulos() {
+    ListaArticulos* nuevaLista = (ListaArticulos*)malloc(sizeof(ListaArticulos));
+    if (nuevaLista == NULL) {
+        return NULL;
+    }
+
+    nuevaLista->articulos = NULL;
+    nuevaLista->cantidad = 0;
+
+    return nuevaLista;
 }
 
-void ListaArticulos_ImprimirLista(const struct ListaArticulos* lista) {
-    struct Nodo* actual = lista->primero;
+void anyadirListaArticulos(ListaArticulos* lista, Articulo* articulo) {
+    lista->articulos = (Articulo**)realloc(lista->articulos, (lista->cantidad + 1) * sizeof(Articulo*));
+    lista->articulos[lista->cantidad] = articulo;
+    lista->cantidad++;
+}
 
-    while (actual != NULL) {
-        Articulo_imprimirArticulo(&actual->articulo);
-        actual = actual->siguiente;
+void eliminarListaArticulos(ListaArticulos* lista, int id) {
+    int indice = -1;
+    for (int i = 0; i < lista->cantidad; i++) {
+        if (lista->articulos[i]->id == id) {
+            indice = i;
+            break;
+        }
+    }
+
+    if (indice != -1) {
+        for (int i = indice; i < (lista->cantidad - 1); i++) {
+            lista->articulos[i] = lista->articulos[i + 1];
+        }
+        lista->cantidad--;
+        lista->articulos = (Articulo**)realloc(lista->articulos, lista->cantidad * sizeof(Articulo*));
     }
 }
 
-void ListaArticulos_AnyadirArticulo(struct ListaArticulos* lista, const struct Articulo* articulo) {
-    struct Nodo* nuevoNodo = (struct Nodo*)malloc(sizeof(struct Nodo));
-    Articulo_copy(&nuevoNodo->articulo, articulo);
-    nuevoNodo->siguiente = NULL;
-
-    if (lista->primero == NULL) {
-        lista->primero = nuevoNodo;
-    } else {
-        struct Nodo* actual = lista->primero;
-
-        while (actual->siguiente != NULL) {
-            actual = actual->siguiente;
-        }
-
-        actual->siguiente = nuevoNodo;
+Articulo* obtenerArticuloMasCaro(const ListaArticulos* lista) {
+    if (lista->cantidad == 0) {
+        return NULL;
     }
-}
 
-void ListaArticulos_EliminarArticulo(struct ListaArticulos* lista, int id) {
-    struct Nodo* actual = lista->primero;
-    struct Nodo* anterior = NULL;
-
-    while (actual != NULL) {
-        if (Articulo_getID(&actual->articulo) == id) {
-            if (anterior == NULL) {
-                lista->primero = actual->siguiente;
-            } else {
-                anterior->siguiente = actual->siguiente;
-            }
-
-            Articulo_destroy(&actual->articulo);
-            free(actual);
-            return;
+    Articulo* masCaro = lista->articulos[0];
+    for (int i = 1; i < lista->cantidad; i++) {
+        if (lista->articulos[i]->precio > masCaro->precio) {
+            masCaro = lista->articulos[i];
         }
-
-        anterior = actual;
-        actual = actual->siguiente;
-    }
-}
-
-struct Articulo* ListaArticulos_ObtenerArticuloMasCaro(const struct ListaArticulos* lista) {
-    struct Nodo* actual = lista->primero;
-    struct Articulo* masCaro = &actual->articulo;
-    float precioMasCaro = Articulo_getPrecio(masCaro);
-
-    while (actual != NULL) {
-        if (Articulo_getPrecio(&actual->articulo) > precioMasCaro) {
-            masCaro = &actual->articulo;
-            precioMasCaro = Articulo_getPrecio(masCaro);
-        }
-
-        actual = actual->siguiente;
     }
 
     return masCaro;
 }
 
-struct Articulo* ListaArticulos_ObtenerArticuloMasBarato(const struct ListaArticulos* lista) {
-    struct Nodo* actual = lista->primero;
-    struct Articulo* masBarato = &actual->articulo;
-    float precioMasBarato = Articulo_getPrecio(masBarato);
+Articulo* obtenerArticuloMasBarato(const ListaArticulos* lista) {
+    if (lista->cantidad == 0) {
+        return NULL;
+    }
 
-    while (actual != NULL) {
-        if (Articulo_getPrecio(&actual->articulo) < precioMasBarato) {
-            masBarato = &actual->articulo;
-            precioMasBarato = Articulo_getPrecio(masBarato);
+    Articulo* masBarato = lista->articulos[0];
+    for (int i = 1; i < lista->cantidad; i++) {
+        if (lista->articulos[i]->precio < masBarato->precio) {
+            masBarato = lista->articulos[i];
         }
-
-        actual = actual->siguiente;
     }
 
     return masBarato;
 }
 
-void ListaArticulos_OrdenarArticulosPorPrecio(struct ListaArticulos* lista) {
-    int intercambioRealizado = 1;
-
-    while (intercambioRealizado) {
-        intercambioRealizado = 0;
-        struct Nodo* actual = lista->primero;
-        struct Nodo* anterior = NULL;
-
-        while (actual != NULL && actual->siguiente != NULL) {
-            struct Nodo* siguiente = actual->siguiente;
-
-            if (Articulo_getPrecio(&actual->articulo) > Articulo_getPrecio(&siguiente->articulo)) {
-                if (anterior == NULL) {
-                    lista->primero = siguiente;
-                } else {
-                    anterior->siguiente = siguiente;
-                }
-
-                actual->siguiente = siguiente->siguiente;
-                siguiente->siguiente = actual;
-
-                anterior = siguiente;
-                siguiente = actual->siguiente;
-                intercambioRealizado = 1;
-            } else {
-                anterior = actual;
-                actual = siguiente;
+void ordenarArticulosPorPrecio(ListaArticulos* lista) {
+    for (int i = 0; i < lista->cantidad - 1; i++) {
+        for (int j = 0; j < lista->cantidad - i - 1; j++) {
+            if (lista->articulos[j]->precio > lista->articulos[j + 1]->precio) {
+                Articulo* temp = lista->articulos[j];
+                lista->articulos[j] = lista->articulos[j + 1];
+                lista->articulos[j + 1] = temp;
             }
         }
     }
+}
+
+void imprimirListaArticulos(const ListaArticulos* lista) {
+    printf("Lista de Articulos:\n");
+    for (int i = 0; i < lista->cantidad; i++) {
+        printf("ID: %d, Nombre: %s, Precio: %.2f\n", lista->articulos[i]->id, lista->articulos[i]->nombre, lista->articulos[i]->precio);
+    }
+}
+
+void liberarListaArticulos(ListaArticulos* lista) {
+    for (int i = 0; i < lista->cantidad; i++) {
+        liberarArticulo(lista->articulos[i]);
+    }
+    free(lista->articulos);
+    free(lista);
 }
