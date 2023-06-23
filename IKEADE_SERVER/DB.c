@@ -95,7 +95,7 @@ int insertarListaArticulos(Database* database, const ListaArticulos* listaArticu
     return 1;
 }
 
-int agregarArticuloCarrito(Database* database, int idCliente, int idArticulo) {
+int agregarArticuloCarritoDB(Database* database, int idCliente, int idArticulo) {
     char sql[256];
     snprintf(sql, sizeof(sql), "INSERT INTO carrito (id_cliente, id_articulo) VALUES (%d, %d)", idCliente, idArticulo);
 
@@ -109,7 +109,7 @@ int agregarArticuloCarrito(Database* database, int idCliente, int idArticulo) {
     return 1;
 }
 
-int eliminarArticuloCarrito(Database* database, int idCliente, int idArticulo) {
+int eliminarArticuloCarritoDB(Database* database, int idCliente, int idArticulo) {
     char sql[256];
     snprintf(sql, sizeof(sql), "DELETE FROM carrito WHERE id_cliente = %d AND id_articulo = %d", idCliente, idArticulo);
 
