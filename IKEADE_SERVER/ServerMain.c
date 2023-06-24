@@ -4,6 +4,7 @@
 #include <winsock2.h>
 #include "Cliente.h"
 #include "Articulo.h"
+#include "ListaArticulos.h"
 #include "DB.h"
 #define SERVER_IP "127.0.0.1"
 #define SERVER_PORT 6000
@@ -67,7 +68,7 @@ int main(int argc, char *argv[]) {
     int fin = 0;
     Database* database= createDatabase("db.db");
     do {
-        char opcion;
+        char opcion,opcionC;
         char nom[20], con[20],dni[20],tlf[20],art[20];
         int resul,id,stock,precio;
         do {
@@ -110,7 +111,50 @@ int main(int argc, char *argv[]) {
 
                     } else if (strcmp(nom, "CLIENTE") == 0 && strcmp(con, "CLIENTE") == 0) {
                         resul = 2;
+                        do {
+                            recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+                            sscanf(recvBuff, "%c", &opcionC);
+                            switch (opcionC) {
+                                case '1':
+                                    // COMPRAR ARTICULOS
+                                    recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+                                    sprintf(art, "%s", recvBuff);
+                                    recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+                                    int cantidad;
+                                    sscanf(recvBuff, "%d", &cantidad);
+                                    int resultado = procesarCompra(database, art, cantidad);
 
+                                    sprintf(sendBuff, "%d", resultado);
+                                    send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+                                    break;
+                                case '2':
+                                    // DEVOLVER ARTICULO
+                                    recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+                                    sprintf(art, "%s", recvBuff);
+                                    recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+                                    int cantidad_devolver;
+                                    sscanf(recvBuff, "%d", &cantidad_devolver);
+                                    int resultado_devolucion = procesarDevolucion(database, art, cantidad_devolver);
+
+                                    sprintf(sendBuff, "%d", resultado_devolucion);
+                                    send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+                                    break;
+                                case '3':
+                                    // VER COMPRAS
+                                    sprintf(sendBuff, "VER_COMPRAS");
+                                    send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+                                    ListaArticulos* listaCompras = obtenerListaCompras(database);
+                                    char listaComprasStr[512];
+                                    convertirListaArticuloAString(listaCompras, listaComprasStr);
+                                    send(comm_socket, listaComprasStr, sizeof(listaComprasStr), 0);
+                                    break;
+                                case '0':
+                                    break;
+                                default:
+                                    printf("La opcion no es correcta\n");
+                                    break;
+                            }
+                        } while (opcionC != '0');
                     } else {
                         resul = 0;
                     }

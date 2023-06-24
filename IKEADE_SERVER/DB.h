@@ -11,7 +11,6 @@ typedef struct {
 } Database;
 
 Database* createDatabase(const char* filename);
-void closeDatabase(Database* database);
 int insertarCliente(Database* database, const Cliente* cliente);
 int insertarArticulo(Database* database, const Articulo* articulo);
 int modificarArticuloDB(Database* database, int idArticulo, float nuevoPrecio);
@@ -20,5 +19,8 @@ int insertarListaArticulos(Database* database, const ListaArticulos* listaArticu
 int agregarArticuloCarritoDB(Database* database, int idCliente, int idArticulo);
 int eliminarArticuloCarritoDB(Database* database, int idCliente, int idArticulo);
 ListaArticulos* obtenerArticulosCarrito(Database* database, int idCliente);
+int procesarDevolucion(Database* database, const char* articulo, int cantidad);
+ListaArticulos* obtenerListaCompras(Database* database);
+void closeDatabase(Database* database);
 
 #endif

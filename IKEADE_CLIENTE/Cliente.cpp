@@ -1,10 +1,3 @@
-/*
- * Cliente.cpp
- *
- *  Created on: 23 jun 2023
- *      Author: pablo
- */
-
 #include <stdio.h>
 #include <winsock2.h>
 #include <iostream>
@@ -16,9 +9,9 @@ using namespace std;
 char menu(){
 	char opcion;
 	cout<<"1. Registrarse"<<endl;
-	cout<<"2. Iniciar Sesi�n"<<endl;
+	cout<<"2. Iniciar Sesion"<<endl;
 	cout<<"0. Salir"<<endl;
-	cout<<"Elige una opci�n: ";
+	cout<<"Elige una opcion: ";
 	cin>>opcion;
 	return opcion;
 }
@@ -92,7 +85,7 @@ int main(int argc, char *argv[]) {
 
 	/*EMPIEZA EL PROGRAMA DEL CLIENTE*/
 	char opcion,opcionA,opcionC;
-	char nom[20],con[20],dni[20],tlf[20],art[20];
+	char nom[20],con[20],dni[20],tlf[20],art[20],cantidad[20];
 	int resul,id,precio,stock;
 
 	do{
@@ -106,9 +99,9 @@ int main(int argc, char *argv[]) {
 		case '1':
 			cout<<"====REGISTARSE===="<<endl;
 			cout<<"DNI: ";cin>>dni;
-			cout<<"Nombre";cin>>nom;
-			cout<<"Contrasenya";cin>>con;
-			cout<<"Telefono";cin>>tlf;
+			cout<<"Nombre:";cin>>nom;
+			cout<<"Contrasenia:";cin>>con;
+			cout<<"Telefono:";cin>>tlf;
 			sprintf(sendBuff,"%s",dni);
 			send(s, sendBuff, sizeof(sendBuff), 0);
 			sprintf(sendBuff,"%s",nom);
@@ -161,8 +154,55 @@ int main(int argc, char *argv[]) {
 				do{
 					opcionC = menuCliente();
 					switch(opcionC){
-						case '1': break;
-						case '2': break;
+						case '1':
+						cout<<"Ingrese el nombre o ID del artículo: ";cin>>art;
+						cout<<"Ingrese la cantidad: ";cin>>cantidad;
+						sprintf(sendBuff, "%s", art);
+						send(s, sendBuff, sizeof(sendBuff), 0);
+						sprintf(sendBuff, "%d", cantidad);
+						send(s, sendBuff, sizeof(sendBuff), 0);
+
+						recv(s, recvBuff, sizeof(recvBuff), 0);
+						sscanf(recvBuff, "%d", &resul);
+
+						if (resul == 1) {
+							cout<<"Compra realizada con éxito"<<endl;
+						} else {
+							cout<<"No se pudo realizar la compra"<<endl;
+						}
+
+						break;
+
+						case '2':
+					    cout<<"Ingrese el nombre o ID del artículo: ";cin>>art;
+					    cout<<"Ingrese la cantidad a devolver: ";cin>>cantidad;
+
+					    sprintf(sendBuff, "%s", art);
+					    send(s, sendBuff, sizeof(sendBuff), 0);
+					    sprintf(sendBuff, "%d", cantidad);
+					    send(s, sendBuff, sizeof(sendBuff), 0);
+
+					    recv(s, recvBuff, sizeof(recvBuff), 0);
+					    sscanf(recvBuff, "%d", &resul);
+
+					    if (resul == 1) {
+					        cout << "Devolución realizada con éxito" << endl;
+					    } else {
+					        cout << "No se pudo realizar la devolución" << endl;
+					    }
+
+					    break;
+
+						case '3':
+						    sprintf(sendBuff, "VER_COMPRAS");
+						    send(s, sendBuff, sizeof(sendBuff), 0);
+
+						    recv(s, recvBuff, sizeof(recvBuff), 0);
+						    cout << "Lista de compras:" << endl;
+						    cout << recvBuff << endl;
+
+						break;
+
 						case '0': break;
 						default: cout<<"La opcion no es correcta"<<endl;
 					}

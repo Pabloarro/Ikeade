@@ -12,6 +12,7 @@ void inicializarCarrito(Carrito* carrito);
 void agregarArticuloCarrito(Carrito* carrito, Articulo* articulo);
 void eliminarArticuloCarrito(Carrito* carrito, int indice);
 void modificarArticuloCarrito(Carrito* carrito, int indice, float nuevoPrecio);
+int procesarCompra(Carrito* carrito);
 
 
 #endif

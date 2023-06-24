@@ -8,7 +8,6 @@ Articulo* crearArticulo(int id, const char* nombre, float precio, int stock) {
 	    articulo->precio = precio;
 	    return articulo;
 	    articulo->stock=stock;
-	    return stock;
 }
 
 void anyadirArticulo(Articulo** listaArticulos, int* cantidadArticulos, Articulo* nuevoArticulo) {
@@ -44,7 +43,7 @@ void eliminarArticuloPorId(Articulo** listaArticulos, int* cantidadArticulos, in
 }
 
 void imprimirArticulo(const Articulo* articulo) {
-    printf("ID: %d, Nombre: %s, Precio: %.2f, Stock: %2.f\n", articulo->id, articulo->nombre, articulo->precio,articulo->stock);
+	printf("ID: %d, Nombre: %s, Precio: %.2f, Stock: %d\n", articulo->id, articulo->nombre, articulo->precio, articulo->stock);
 }
 
 void liberarArticulo(Articulo* articulo) {

@@ -85,6 +85,26 @@ void imprimirListaArticulos(const ListaArticulos* lista) {
     }
 }
 
+char* convertirListaArticuloAString(const ListaArticulos* lista) {
+    int tamanoTotal = 0;
+    for (int i = 0; i < lista->cantidad; i++) {
+        Articulo* articulo = lista->articulos[i];
+        tamanoTotal += snprintf(NULL, 0, "ID: %d, Nombre: %s, Precio: %.2f, Cantidad: %d\n",
+                               articulo->id, articulo->nombre, articulo->precio, articulo->stock);
+    }
+
+    char* resultado = (char*)malloc((tamanoTotal + 1) * sizeof(char));
+    char* posicionActual = resultado;
+
+    for (int i = 0; i < lista->cantidad; i++) {
+        Articulo* articulo = lista->articulos[i];
+        posicionActual += snprintf(posicionActual, tamanoTotal + 1, "ID: %d, Nombre: %s, Precio: %.2f, Cantidad: %d\n",
+                                   articulo->id, articulo->nombre, articulo->precio, articulo->stock);
+    }
+
+    return resultado;
+}
+
 void liberarListaArticulos(ListaArticulos* lista) {
     for (int i = 0; i < lista->cantidad; i++) {
         liberarArticulo(lista->articulos[i]);

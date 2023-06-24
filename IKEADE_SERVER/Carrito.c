@@ -38,3 +38,21 @@ void modificarArticuloCarrito(Carrito* carrito, int indice, float nuevoPrecio) {
         printf("Índice inválido. No se puede modificar el artículo.\n");
     }
 }
+
+int procesarCompra(Carrito* carrito) {
+    if (carrito->cantidad == 0) {
+        printf("El carrito está vacío. No se puede procesar la compra.\n");
+        return 0;
+    }
+
+    float totalCompra = 0.0;
+    for (int i = 0; i < carrito->cantidad; i++) {
+        Articulo* articulo = carrito->articulos[i];
+        totalCompra += articulo->precio;
+    }
+
+    carrito->cantidad = 0;
+
+    printf("Compra procesada exitosamente. Total: %.2f\n", totalCompra);
+    return 1;
+}

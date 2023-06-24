@@ -12,13 +12,6 @@ Database* createDatabase(const char* filename) {
     return database;
 }
 
-void closeDatabase(Database* database) {
-    if (database != NULL) {
-        sqlite3_close(database->db);
-        free(database);
-    }
-}
-
 int insertarCliente(Database* database, const Cliente* cliente) {
     char sql[256];
     snprintf(sql, sizeof(sql), "INSERT INTO Cliente (dni, nombre, telefono,contrasena) VALUES (%d, '%s', '%s', '%s')",
@@ -147,4 +140,68 @@ ListaArticulos* obtenerArticulosCarrito(Database* database, int idCliente) {
 
     sqlite3_finalize(stmt);
     return listaArticulos;
+}
+
+int procesarDevolucion(Database* database, const char* articulo, int cantidad) {
+    char query[100];
+    int result;
+    sprintf(query, "SELECT stock FROM articulos WHERE nombre='%s'", articulo);
+    sqlite3_stmt* stmt;
+    if (sqlite3_prepare_v2(database->db, query, -1, &stmt, NULL) != SQLITE_OK) {
+        fprintf(stderr, "Error al preparar la consulta: %s\n", sqlite3_errmsg(database->db));
+        return -1;
+    }
+
+    if (sqlite3_step(stmt) != SQLITE_ROW) {
+        sqlite3_finalize(stmt);
+        return 0;
+    }
+
+    int stock = sqlite3_column_int(stmt, 0);
+    sqlite3_finalize(stmt);
+
+
+    if (stock < cantidad) {
+        return 0;
+    }
+
+    sprintf(query, "UPDATE articulos SET stock = stock - %d WHERE nombre = '%s'", cantidad, articulo);
+    if (sqlite3_exec(database->db, query, NULL, NULL, NULL) != SQLITE_OK) {
+        fprintf(stderr, "Error al ejecutar la consulta: %s\n", sqlite3_errmsg(database->db));
+        return -1;
+    }
+
+    return 1;
+}
+
+ListaArticulos* obtenerListaCompras(Database* database) {
+    char sqlQuery[512];
+    sprintf(sqlQuery, "SELECT * FROM compras;");
+    sqlite3_stmt* stmt;
+    ListaArticulos* listaCompras = crearListaArticulos();
+
+    if (sqlite3_prepare_v2(database->db, sqlQuery, -1, &stmt, 0) != SQLITE_OK) {
+        printf("Error preparing statement\n");
+        return listaCompras;
+    }
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        int idArticulo = sqlite3_column_int(stmt, 0);
+        const unsigned char* nombre = sqlite3_column_text(stmt, 1);
+        float precio = sqlite3_column_double(stmt, 2);
+        int cantidad = sqlite3_column_int(stmt, 3);
+
+        Articulo* articulo = crearArticulo(idArticulo, nombre, precio, cantidad);
+        agregarArticulo(listaCompras, articulo);
+    }
+
+    sqlite3_finalize(stmt);
+    return listaCompras;
+}
+
+void closeDatabase(Database* database) {
+    if (database != NULL) {
+        sqlite3_close(database->db);
+        free(database);
+    }
 }
