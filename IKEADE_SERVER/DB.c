@@ -21,8 +21,8 @@ void closeDatabase(Database* database) {
 
 int insertarCliente(Database* database, const Cliente* cliente) {
     char sql[256];
-    snprintf(sql, sizeof(sql), "INSERT INTO clientes (dni, nombre, telefono) VALUES (%d, '%s', '%s')",
-             cliente->dni, cliente->nombre, cliente->telefono);
+    snprintf(sql, sizeof(sql), "INSERT INTO Cliente (dni, nombre, telefono,contrasena) VALUES (%d, '%s', '%s', '%s')",
+             cliente->dni, cliente->nombre, cliente->telefono,cliente->contrasena);
 
     char* errMsg;
     int rc = sqlite3_exec(database->db, sql, NULL, 0, &errMsg);
@@ -139,8 +139,9 @@ ListaArticulos* obtenerArticulosCarrito(Database* database, int idCliente) {
         int id = sqlite3_column_int(stmt, 0);
         const unsigned char* nombre = sqlite3_column_text(stmt, 1);
         float precio = sqlite3_column_double(stmt, 2);
+        int stock = sqlite3_column_int(stmt, 3);
 
-        Articulo* articulo = crearArticulo(id, (const char*)nombre, precio);
+        Articulo* articulo = crearArticulo(id, nombre, precio, stock);
         agregarArticulo(listaArticulos, articulo);
     }
 

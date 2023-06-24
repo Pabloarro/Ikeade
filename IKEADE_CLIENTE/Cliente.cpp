@@ -117,10 +117,13 @@ int main(int argc, char *argv[]) {
 			send(s, sendBuff, sizeof(sendBuff), 0); //Env�o la contrase�a al servidor
 			sprintf(sendBuff,"%s",tlf);
 			send(s, sendBuff, sizeof(sendBuff), 0);
+
+			// Guardar datos del cliente en la base de datos
+
 			break;
 		case '2':
 			cout<<"NOMBRE: ";cin>>nom;
-			cout<<"CONTRASE�A: ";cin>>con;
+			cout<<"CONTRASENYA: ";cin>>con;
 			sprintf(sendBuff,"%s",nom);
 			send(s, sendBuff, sizeof(sendBuff), 0); //Env�o el nombre al servidor
 			sprintf(sendBuff,"%s",con);
@@ -138,20 +141,20 @@ int main(int argc, char *argv[]) {
 							cout<<"Introduce un nombre: ";cin>>art;
 							cout<<"Introduce un precio: ";cin>>precio;
 							cout<<"Introduce el stock: ";cin>>stock;
-							sprintf(sendBuff,"%s",id);
+							sprintf(sendBuff,"%d",id);
 							send(s, sendBuff, sizeof(sendBuff), 0);
 							sprintf(sendBuff,"%s",art);
 							send(s, sendBuff, sizeof(sendBuff), 0);
-							sprintf(sendBuff,"%s",precio);
+							sprintf(sendBuff,"%d",precio);
 							send(s, sendBuff, sizeof(sendBuff), 0);
-							sprintf(sendBuff,"%s",stock);
+							sprintf(sendBuff,"%d",stock);
 							send(s, sendBuff, sizeof(sendBuff), 0);
 
 
 							break;
 						case '2': break;
 						case '0': break;
-						default: cout<<"La opci�n no es correcta"<<endl;
+						default: cout<<"La opcion no es correcta"<<endl;
 					}
 				}while(opcionA!='0');
 			}else if(resul ==2){
@@ -161,15 +164,15 @@ int main(int argc, char *argv[]) {
 						case '1': break;
 						case '2': break;
 						case '0': break;
-						default: cout<<"La opci�n no es correcta"<<endl;
+						default: cout<<"La opcion no es correcta"<<endl;
 					}
 				}while(opcionC!='0');
 			}else{
-				cout<<"El Inicio de Sesi�n no ha sido correcto"<<endl;
+				cout<<"El Inicio de Sesion no ha sido correcto"<<endl;
 			}
 			break;
 		case '0': cout<<"AGUR"<<endl;break;
-		default: cout<<"La opci�n seleccionada no es correcta"<<endl;
+		default: cout<<"La opcion seleccionada no es correcta"<<endl;
 		}
 
 	}while(opcion!='0');

@@ -4,6 +4,7 @@
 #include <winsock2.h>
 #include "Cliente.h"
 #include "Articulo.h"
+#include "DB.h"
 #define SERVER_IP "127.0.0.1"
 #define SERVER_PORT 6000
 
@@ -64,6 +65,7 @@ int main(int argc, char *argv[]) {
 
     closesocket(conn_socket);
     int fin = 0;
+    Database* database= createDatabase("db.db");
     do {
         char opcion;
         char nom[20], con[20],dni[20],tlf[20],art[20];
@@ -73,6 +75,7 @@ int main(int argc, char *argv[]) {
             sscanf(recvBuff, "%c", &opcion);
             switch (opcion) {
                 case '1':
+                	//REGISTRARSE
                 	  recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                 	  sprintf(dni, "%s", recvBuff);
                 	  recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
@@ -82,15 +85,17 @@ int main(int argc, char *argv[]) {
                 	  recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                 	  sprintf(tlf, "%s", recvBuff);
                 	  Cliente* c =crearCliente(dni, nom, con, tlf);
-
+                	  insertarCliente(database, c);
                 	  break;
                 case '2':
+                	//INICIAR SESION
                     recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                     sprintf(nom, "%s", recvBuff);
                     recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                     sprintf(con, "%s", recvBuff);
                     if (strcmp(nom, "ADMIN") == 0 && strcmp(con, "ADMIN") == 0) {
                         resul = 1;
+                        
                         recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                          printf(id, "%s", recvBuff);
                          recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
@@ -101,6 +106,7 @@ int main(int argc, char *argv[]) {
                          printf(stock, "%s", recvBuff);
 
                          Articulo* a =crearArticulo(id, art, precio, stock);
+
 
                     } else if (strcmp(nom, "CLIENTE") == 0 && strcmp(con, "CLIENTE") == 0) {
                         resul = 2;
