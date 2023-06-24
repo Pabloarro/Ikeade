@@ -4,8 +4,9 @@
 #include <winsock2.h>
 #include "Cliente.h"
 #include "Articulo.h"
-#include "ListaArticulos.h"
 #include "DB.h"
+#include "Gestor.h"
+#include "ListaArticulos.h"
 #define SERVER_IP "127.0.0.1"
 #define SERVER_PORT 6000
 
@@ -67,13 +68,17 @@ int main(int argc, char *argv[]) {
     closesocket(conn_socket);
     int fin = 0;
     Database* database= createDatabase("db.db");
+    ListaArticulos* listaArt= crearListaArticulos();
+    Gestor* gestor= crearGestor();
+
     do {
-        char opcion,opcionC;
-        char nom[20], con[20],dni[20],tlf[20],art[20];
-        int resul,id,stock,precio;
+        char opcion,opcionC, opcionA;
+        char nom[20], con[20],dni[20],tlf[20],art[20],nuevoNombre[20];
+        int resul,id,stock,precio,nuevoPrecio;;
+
         do {
             recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-            sscanf(recvBuff, "%c", &opcion);
+            sscanf(recvBuff, "%d", &opcion);
             switch (opcion) {
                 case '1':
                 	//REGISTRARSE
@@ -92,27 +97,85 @@ int main(int argc, char *argv[]) {
                 	//INICIAR SESION
                     recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                     sprintf(nom, "%s", recvBuff);
+
                     recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                     sprintf(con, "%s", recvBuff);
+
+
                     if (strcmp(nom, "ADMIN") == 0 && strcmp(con, "ADMIN") == 0) {
                         resul = 1;
-                        
+                        sprintf(sendBuff, "%d", resul);
+                        send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+                        do{
                         recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-                         printf(id, "%s", recvBuff);
-                         recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-                         printf(art, "%s", recvBuff);
-                         recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-                         printf(precio, "%s", recvBuff);
-                         recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-                         printf(stock, "%s", recvBuff);
+                        sscanf(recvBuff, "%d", &opcionA);
 
-                         Articulo* a =crearArticulo(id, art, precio, stock);
+                        switch(opcionA){
+                        	case '1':
+								recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+								sprintf(id, "%d", recvBuff);
+								recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+								sprintf(art, "%s", recvBuff);
+								recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+								sprintf(precio, "%d", recvBuff);
+								recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+								sprintf(stock, "%d", recvBuff);
 
+								 Articulo* a =crearArticulo(id, art, precio, stock);
+								 insertarArticulo(database, a);
+
+								 break;
+                        	case '2':
+                        		recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+                        		sprintf(id, "%s", recvBuff);
+
+                        		eliminarListaArticulos(listaArt, id);
+
+                        		imprimirListaArticulos(listaArt);
+                        		break;
+
+                        	case '3':
+                        		recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+                        	    sprintf(id, "%d", recvBuff);
+
+                        	    Articulo* articulo=buscarArticuloPorId(listaArt, id);
+
+                        	    if (articulo == NULL) {
+                        	        printf("No se encontró el artículo con ID: %d\n", id);
+                        	    } else {
+                        	    	recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+                        	    	sprintf(nuevoNombre, "%s", recvBuff);
+                        	    	recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+                        	    	sprintf(nuevoPrecio, "%d", recvBuff);
+
+                        	        // Modificar el artículo
+                        	        modificarArticulo(articulo, nuevoNombre, nuevoPrecio);
+                        	        printf("Artículo modificado:\n");
+                        	        printf("ID: %d, Nombre: %s, Precio: %.2f\n", articulo->id, articulo->nombre, articulo->precio);
+                        	    }
+
+                        		break;
+
+                        	case'4':
+                        		visualizarVentas(gestor);
+                        		break;
+                        	case '5':
+                        		recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+                        		sprintf(nom, "%s", recvBuff);
+                        		visualizarVentasPorCliente(gestor);
+
+                        		break;
+
+
+                        	case '0': break;
+
+                        	}
+                        }while(opcionA!='0');
 
                     } else if (strcmp(nom, "CLIENTE") == 0 && strcmp(con, "CLIENTE") == 0) {
                         resul = 2;
-                        do {
-                            recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+                        do{
+                        	recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                             sscanf(recvBuff, "%c", &opcionC);
                             switch (opcionC) {
                                 case '1':
@@ -153,13 +216,14 @@ int main(int argc, char *argv[]) {
                                 default:
                                     printf("La opcion no es correcta\n");
                                     break;
-                            }
-                        } while (opcionC != '0');
+
+                        }
+
+                        }while(opcionC!='0');
                     } else {
                         resul = 0;
                     }
-                    sprintf(sendBuff, "%d", resul);
-                    send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+
 
 
 

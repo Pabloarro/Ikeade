@@ -2,6 +2,18 @@
 #include "Gestor.h"
 #include <time.h>
 
+Gestor* crearGestor() {
+    Gestor* gestor = (Gestor*)malloc(sizeof(Gestor));
+    if (gestor == NULL) {
+        return NULL;
+    }
+
+
+    gestor->cantidadVentas = 0;
+
+
+    return gestor;
+}
 void guardarArticulos(const ListaArticulos* lista, const char* nombreArchivo) {
     FILE* archivo = fopen(nombreArchivo, "wb");
     if (archivo == NULL) {
@@ -134,3 +146,4 @@ void visualizarVentasPorCliente(const Gestor* gestor) {
         printf("No se encontraron ventas para este cliente.\n");
     }
 }
+

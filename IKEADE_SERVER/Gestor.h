@@ -12,6 +12,7 @@ typedef struct {
     int capacidadVentas;
 } Gestor;
 
+Gestor* crearGestor();
 void guardarArticulos(const ListaArticulos* lista, const char* nombreArchivo);
 void cargarArticulos(ListaArticulos* lista, const char* nombreArchivo);
 

@@ -1,4 +1,5 @@
 #include "ListaArticulos.h"
+#include "Articulo.h"
 
 ListaArticulos* crearListaArticulos() {
     ListaArticulos* nuevaLista = (ListaArticulos*)malloc(sizeof(ListaArticulos));
@@ -114,4 +115,13 @@ void liberarListaArticulos(ListaArticulos* lista) {
     }
     free(lista->articulos);
     free(lista);
+}
+
+Articulo* buscarArticuloPorId(const ListaArticulos* lista, int id) {
+    for (int i = 0; i < lista->cantidad; i++) {
+        if (lista->articulos[i]->id == id) {
+            return lista->articulos[i];
+        }
+    }
+    return NULL; // El artículo no se encontró
 }

@@ -145,7 +145,8 @@ int main(int argc, char *argv[]) {
 
 
 							break;
-						case '2': break;
+						case '2':
+							break;
 						case '0': break;
 						default: cout<<"La opcion no es correcta"<<endl;
 					}
