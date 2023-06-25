@@ -10,7 +10,7 @@ typedef struct {
     sqlite3* db;
 } Database;
 
-Database* crearTablas();
+int crearTablas(Database* database);
 /*Database* createDatabase(const char* filename);
 int crearTablaCliente(Database* database);
 int crearTablaArticulo(Database* database)*/

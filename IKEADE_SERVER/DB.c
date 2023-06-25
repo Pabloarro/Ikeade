@@ -1,7 +1,7 @@
 #include "DB.h"
 #include <stdio.h>
 
-Database* crearTablas() {
+int crearTablas(Database* database) {
     sqlite3 *db;
     char *err_msg = 0;
 
