@@ -19,5 +19,5 @@ void registrarCliente(Cliente** clientes, int* numClientes);
 void pedirCliente(Cliente** cliente);
 void imprimirCliente(const Cliente* cliente);
 void liberarCliente(Cliente* cliente);
-
+int iniSesion(char* nom, char* con);
 #endif

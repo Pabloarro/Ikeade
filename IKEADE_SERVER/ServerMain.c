@@ -7,6 +7,7 @@
 #include "DB.h"
 #include "Gestor.h"
 #include "ListaArticulos.h"
+#include "log.h"
 #define SERVER_IP "127.0.0.1"
 #define SERVER_PORT 6000
 
@@ -84,25 +85,49 @@ int main(int argc, char *argv[]) {
             switch (opcion) {
                 case '1':
                 	//REGISTRARSE
+                	  loggear("Registrar Usuario\n");
+                	  printf("Registrar Usuario\n");
+
                 	  recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-                	  sprintf(dni, "%s", recvBuff);
+                	  sscanf(recvBuff, "%s", dni);
+                	  loggear("Dni Usuario recibido: ");
+                	  loggear(dni);
+                	  loggear("\n");
                 	  recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-                	  sprintf(nom, "%s", recvBuff);
+                	  sscanf(recvBuff, "%s", nom);
+                	  loggear("Nombre Usuario recibido: ");
+                	  loggear(nom);
+                	  loggear("\n");
                 	  recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-                	  sprintf(con, "%s", recvBuff);
+                	  sscanf(recvBuff, "%s",con);
+                	  loggear("Contraseña recibida: ");
+                	  loggear(con);
+                	  loggear("\n");
                 	  recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-                	  sprintf(tlf, "%s", recvBuff);
+                	  sscanf(recvBuff,"%s",tlf );
+                	  loggear("Telefono recibido: ");
+                	  loggear(tlf);
+                	  loggear("\n");
                 	  Cliente* c =crearCliente(dni, nom, con, tlf);
                 	  insertarCliente(database, c);
+
+
+
                 	  break;
                 case '2':
                 	//INICIAR SESION
+                	loggear("Iniciar Sesion\n");
+                	printf("Inicio Sesion\n");
                 	recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                 	sscanf(recvBuff, "%s", nom);
-
+                	loggear("Nombre Usuario recibido: ");
+                	loggear(nom);
+                	loggear("\n");
                     recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                     sscanf(recvBuff, "%s", con);
-
+                    loggear("Contraseña recibida: ");
+                    loggear(con);
+                    loggear("\n");
 
                     if (strcmp(nom, "ADMIN") == 0 && strcmp(con, "ADMIN") == 0) {
                         resul = 1;
@@ -182,7 +207,8 @@ int main(int argc, char *argv[]) {
                         	}
                         }while(opcionA!='0');
 
-                    } else if (strcmp(nom, "CLIENTE") == 0 && strcmp(con, "CLIENTE") == 0) {
+                    } else if (iniSesion(nom, con) == 0) {
+
                         resul = 2;
                         sprintf(sendBuff, "%d", resul);
                         send(comm_socket, sendBuff, sizeof(sendBuff), 0);

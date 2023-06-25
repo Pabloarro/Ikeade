@@ -24,5 +24,5 @@ ListaArticulos* obtenerArticulosCarrito(Database* database, int idCliente);
 int procesarDevolucion(Database* database, const char* articulo, int cantidad);
 ListaArticulos* obtenerListaCompras(Database* database);
 void closeDatabase(Database* database);
-
+int ComprobarInicioSes(char* nom, char* pass);
 #endif
