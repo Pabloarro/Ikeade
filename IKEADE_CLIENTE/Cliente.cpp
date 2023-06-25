@@ -117,11 +117,13 @@ int main(int argc, char *argv[]) {
 		case '2':
 			cout<<"NOMBRE: ";cin>>nom;
 			cout<<"CONTRASENYA: ";cin>>con;
+			cout<<nom;
+			cout<<con;
 			sprintf(sendBuff,"%s",nom);
-			send(s, nom, sizeof(nom), 0); //Env�o el nombre al servidor
+			send(s, sendBuff, sizeof(sendBuff), 0); //Env�o el nombre al servidor
 			sprintf(sendBuff,"%s",con);
-			send(s, con, sizeof(con), 0); //Env�o la contrase�a al servidor
-
+			send(s, sendBuff, sizeof(sendBuff), 0); //Env�o la contrase�a al servidor
+			cout<<sendBuff;
 			recv(s, recvBuff, sizeof(recvBuff), 0); //Recibe el resultado del Inicio de Sesi�n
 			sscanf(recvBuff,"%d",&resul);
 			cout<<"RESULTADO: "<<resul<<endl;

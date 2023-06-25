@@ -95,11 +95,11 @@ int main(int argc, char *argv[]) {
                 	  break;
                 case '2':
                 	//INICIAR SESION
-                    recv(comm_socket, nom, sizeof(nom), 0);
-                    sprintf(nom, "%s", recvBuff);
+                	recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+                	sscanf(recvBuff, "%s", nom);
 
-                    recv(comm_socket, con, sizeof(con), 0);
-                    sprintf(con, "%s", recvBuff);
+                    recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+                    sscanf(recvBuff, "%s", con);
 
 
                     if (strcmp(nom, "ADMIN") == 0 && strcmp(con, "ADMIN") == 0) {
