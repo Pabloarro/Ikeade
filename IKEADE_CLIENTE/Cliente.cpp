@@ -85,12 +85,12 @@ int main(int argc, char *argv[]) {
 
 	/*EMPIEZA EL PROGRAMA DEL CLIENTE*/
 	char opcion,opcionA,opcionC;
-	char nom[20],con[20],dni[20],tlf[20],art[20],cantidad[20],nuevoNombre[20];
+	char nom[20],con[20],dni[20],tlf[20],art[20],cantidad[20];
 	int resul,id,precio,stock,encontrado,nuevoPrecio;
 
 	do{
 		opcion = menu();
-		sprintf(sendBuff,"%c",opcion);
+		sprintf(sendBuff,"%d",opcion);
 		send(s, sendBuff, sizeof(sendBuff), 0);
 
 
@@ -118,9 +118,9 @@ int main(int argc, char *argv[]) {
 			cout<<"NOMBRE: ";cin>>nom;
 			cout<<"CONTRASENYA: ";cin>>con;
 			sprintf(sendBuff,"%s",nom);
-			send(s, sendBuff, sizeof(sendBuff), 0); //Env�o el nombre al servidor
+			send(s, nom, sizeof(nom), 0); //Env�o el nombre al servidor
 			sprintf(sendBuff,"%s",con);
-			send(s, sendBuff, sizeof(sendBuff), 0); //Env�o la contrase�a al servidor
+			send(s, con, sizeof(con), 0); //Env�o la contrase�a al servidor
 
 			recv(s, recvBuff, sizeof(recvBuff), 0); //Recibe el resultado del Inicio de Sesi�n
 			sscanf(recvBuff,"%d",&resul);
@@ -128,6 +128,9 @@ int main(int argc, char *argv[]) {
 			if(resul==1){
 				do{
 					opcionA = menuAdministrador();
+					sprintf(sendBuff,"%d",opcionA);
+					send(s, sendBuff, sizeof(sendBuff), 0);
+
 					switch(opcionA){
 						case '1':
 							cout<<"Introduce un id: ";cin>>id;
@@ -186,6 +189,8 @@ int main(int argc, char *argv[]) {
 			}else if(resul ==2){
 				do{
 					opcionC = menuCliente();
+					sprintf(sendBuff,"%c",opcionC);
+					send(s, sendBuff, sizeof(sendBuff), 0);
 					switch(opcionC){
 						case '1':
 						cout<<"Ingrese el nombre o ID del artículo: ";cin>>art;

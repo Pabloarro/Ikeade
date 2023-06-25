@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
 
     do {
         char opcion,opcionC, opcionA;
-        char nom[20], con[20],dni[20],tlf[20],art[20],nuevoNombre[20];
+        char nom[20], con[20],dni[20],tlf[20],art[20];
         int resul,id,stock,precio,nuevoPrecio, encontrado;
 
         do {
@@ -95,10 +95,10 @@ int main(int argc, char *argv[]) {
                 	  break;
                 case '2':
                 	//INICIAR SESION
-                    recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+                    recv(comm_socket, nom, sizeof(nom), 0);
                     sprintf(nom, "%s", recvBuff);
 
-                    recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+                    recv(comm_socket, con, sizeof(con), 0);
                     sprintf(con, "%s", recvBuff);
 
 
@@ -107,9 +107,9 @@ int main(int argc, char *argv[]) {
                         sprintf(sendBuff, "%d", resul);
                         send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                         do{
-                        recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-                        sscanf(recvBuff, "%d", &opcionA);
 
+                        	recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+                        	sscanf(recvBuff, "%d", &opcionA);
                         switch(opcionA){
                         	case '1':
 								recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
@@ -156,7 +156,7 @@ int main(int argc, char *argv[]) {
 
                         	        // Modificar el artículo
 
-                        	        modificarArticulo(articulo, nuevoNombre, nuevoPrecio);
+                        	        modificarArticulo(articulo, nuevoPrecio);
                         	        modificarArticuloDB(database, id,nuevoPrecio);
                         	        printf("Artículo modificado:\n");
                         	        printf("ID: %d, Nombre: %s, Precio: %.2f\n", articulo->id, articulo->nombre, articulo->precio);
@@ -182,9 +182,11 @@ int main(int argc, char *argv[]) {
 
                     } else if (strcmp(nom, "CLIENTE") == 0 && strcmp(con, "CLIENTE") == 0) {
                         resul = 2;
+                        sprintf(sendBuff, "%d", resul);
+                        send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                         do{
                         	recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-                            sscanf(recvBuff, "%c", &opcionC);
+                        	sscanf(recvBuff, "%d", &opcionC);
                             switch (opcionC) {
                                 case '1':
                                     // COMPRAR ARTICULOS
