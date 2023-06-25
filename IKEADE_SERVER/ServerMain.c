@@ -7,8 +7,8 @@
 #include "sqlite3.h"
 #include "DB.h"
 #include "Carrito.h"
-#include "Gestor.h"
-#include "ListaArticulos.h"
+
+
 #include "log.h"
 #define SERVER_IP "127.0.0.1"
 #define SERVER_PORT 6000
@@ -36,7 +36,9 @@ int main(int argc, char *argv[]) {
     Database* database;
 
         // Crea las tablas en la base de datos
-        crearTablas(&database);
+    if (TRUE){
+    	crearTablas();
+    }
 
     printf("\nInitialising Winsock...\n");
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
@@ -88,8 +90,8 @@ int main(int argc, char *argv[]) {
     closesocket(conn_socket);
     int fin = 0;
     //Database* database= createDatabase("db.db");
-    ListaArticulos* listaArt= crearListaArticulos();
-    Gestor* gestor= crearGestor();
+
+
     //crearTablaCliente(database);
     //crearTablaArticulo(database);
     iniciarLogger();
@@ -97,8 +99,8 @@ int main(int argc, char *argv[]) {
     do {
         char opcion,opcionC, opcionA;
         char nom[20], con[20],dni[20],tlf[20],art[20];
-        int resul,id,stock,precio,nuevoPrecio, encontrado;
-
+        int resul,id,stock,nuevoPrecio, encontrado,cantidad;
+        float precio;
 
         do {
             recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
@@ -162,35 +164,37 @@ int main(int argc, char *argv[]) {
                         	sscanf(recvBuff, "%d", &opcionA);
                         switch(opcionA){
                         	case '1':
-								recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-								sprintf(id, "%d", recvBuff);
-								recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-								sprintf(art, "%s", recvBuff);
-								recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-								sprintf(precio, "%d", recvBuff);
-								recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-								sprintf(stock, "%d", recvBuff);
 
+								recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+								sscanf(recvBuff, "%d",id);
+								loggear(id);
+								/*recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+								sscanf( recvBuff, "%s",art);
+								recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+								sscanf(recvBuff, "%f", precio);
+								recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+								sscanf( recvBuff, "%d", stock);*/
+								/*
 								 Articulo* a =crearArticulo(id, art, precio, stock);
-								 insertarArticulo(database, a);
-
-								 continue;
+								 loggear("adios");
+								 insertarArticulo(a);
+								 loggear("Insertar art");
+								 */
+								break;
                         	case '2':
                         		recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-                        		sprintf(id, "%s", recvBuff);
+                        		sprintf(id, "%d", recvBuff);
 
-                        		eliminarListaArticulos(listaArt, id);
 
-                        		imprimirListaArticulos(listaArt);
                         		break;
 
                         	case '3':
                         		recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                         	    sprintf(id, "%d", recvBuff);
 
-                        	    Articulo* articulo = buscarArticuloPorId(listaArt, id);
 
-                        	    if (articulo == NULL) {
+
+                        	 /*   if (articulo == NULL) {
                         	    	encontrado=0;
                         	    	 sprintf(sendBuff, "%d", encontrado);
                         	    	 send(comm_socket, sendBuff, sizeof(sendBuff), 0);
@@ -213,14 +217,15 @@ int main(int argc, char *argv[]) {
                         	    }
 
                         		break;
+                        		*/
 
                         	case'4':
-                        		visualizarVentas(gestor);
+
                         		break;
                         	case '5':
                         		recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                         		sprintf(nom, "%s", recvBuff);
-                        		visualizarVentasPorCliente(gestor);
+
 
                         		break;
 
@@ -240,19 +245,20 @@ int main(int argc, char *argv[]) {
                         	recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                         	sscanf(recvBuff, "%d", &opcionC);
                             switch (opcionC) {
-                               /* case '1':
+                                case '1':
                                     // COMPRAR ARTICULOS
                                     recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                                     sprintf(id, "%s", recvBuff);
                                     recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-                                    int cantidad;
-                                    sscanf(recvBuff, "%d", &cantidad);
-                                    Articulo* articulo = buscarArticuloPorId(listaArt, id);
-                                    int resultado = procesarCompra(database, articulo, cantidad);
 
-                                    sprintf(sendBuff, "%d", resultado);
+                                    sscanf(recvBuff, "%d", &cantidad);
+
+
+
+
+                                  //  sprintf(sendBuff, "%d", resultado);
                                     send(comm_socket, sendBuff, sizeof(sendBuff), 0);
-                                    agregarArticuloCarrito(carrito, articulo);
+
                                     break;
                                 case '2':
                                     // DEVOLVER ARTICULO
@@ -261,13 +267,13 @@ int main(int argc, char *argv[]) {
                                     recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                                     int cantidad_devolver;
                                     sscanf(recvBuff, "%d", &cantidad_devolver);
-                                    Articulo* articulo = buscarArticuloPorId(listaArt, id);
-                                    int resultado_devolucion = procesarDevolucion(database, articulo, cantidad_devolver);
 
-                                    sprintf(sendBuff, "%d", resultado_devolucion);
+                                   // int resultado_devolucion = procesarDevolucion(database, articulo, cantidad_devolver);
+
+
                                     send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                                     break;
-                                    */
+
                                 case '3':
                                     // VER COMPRAS
 

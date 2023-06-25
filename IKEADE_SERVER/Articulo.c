@@ -3,11 +3,10 @@
 Articulo* crearArticulo(int id, const char* nombre, float precio, int stock) {
 	Articulo* articulo = (Articulo*)malloc(sizeof(Articulo));
 	    articulo->id = id;
-	    articulo->nombre = (char*)malloc((strlen(nombre) + 1) * sizeof(char));
-	    strcpy(articulo->nombre, nombre);
+	    articulo->nombre = strdup(nombre);
 	    articulo->precio = precio;
-	    return articulo;
 	    articulo->stock=stock;
+	    return articulo;
 }
 
 void anyadirArticulo(Articulo** listaArticulos, int* cantidadArticulos, Articulo* nuevoArticulo) {

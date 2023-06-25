@@ -13,7 +13,7 @@ typedef struct {
 
 }Cliente;
 
-Cliente* crearCliente(int dni, const char* nombre, const char* telefono, const char* contrasena);
+Cliente* crearCliente(int dni, const char* nombre,  const char* contrasena,const char* telefono);
 int iniciarSesion(const char* filename);
 void registrarCliente(Cliente** clientes, int* numClientes);
 void pedirCliente(Cliente** cliente);

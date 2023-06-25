@@ -4,7 +4,7 @@
 #include "sqlite3.h"
 #include "Articulo.h"
 #include "Cliente.h"
-#include "ListaArticulos.h"
+
 
 typedef struct {
     sqlite3* db;
@@ -15,15 +15,14 @@ int crearTablas();
 int crearTablaCliente(Database* database);
 int crearTablaArticulo(Database* database)*/
 int insertarCliente(const Cliente* cliente);
-int insertarArticulo(Database* database, const Articulo* articulo);
+int insertarArticulo(const Articulo* articulo);
+int eliminarArticulo(int id);
+
 int modificarArticuloDB(Database* database, int idArticulo, float nuevoPrecio);
-int eliminarArticulo(Database* database, int idArticulo);
-int insertarListaArticulos(Database* database, const ListaArticulos* listaArticulos);
+
 int agregarArticuloCarritoDB(Database* database, int idCliente, int idArticulo);
 int eliminarArticuloCarritoDB(Database* database, int idCliente, int idArticulo);
-ListaArticulos* obtenerArticulosCarrito(Database* database, int idCliente);
 int procesarDevolucion(Database* database, const char* articulo, int cantidad);
-ListaArticulos* obtenerListaCompras(Database* database);
 void closeDatabase(Database* database);
 int ComprobarInicioSes(char* nom, char* pass);
 #endif

@@ -90,8 +90,8 @@ int main(int argc, char *argv[]) {
 	/*EMPIEZA EL PROGRAMA DEL CLIENTE*/
 	char opcion,opcionA,opcionC;
 	char nom[20],con[20],dni[20],tlf[20],art[20],cantidad[20];
-	int resul,id,precio,stock,encontrado,nuevoPrecio,resultado_devolucion;
-
+	int resul,id,stock,encontrado,nuevoPrecio,resultado_devolucion;
+	float precio;
 	do{
 		opcion = menu();
 		sprintf(sendBuff,"%d",opcion);
@@ -146,12 +146,16 @@ int main(int argc, char *argv[]) {
 							cout<<"Introduce el stock: ";cin>>stock;
 							sprintf(sendBuff,"%d",id);
 							send(s, sendBuff, sizeof(sendBuff), 0);
+							/*
 							sprintf(sendBuff,"%s",art);
 							send(s, sendBuff, sizeof(sendBuff), 0);
-							sprintf(sendBuff,"%d",precio);
+
+							sprintf(sendBuff,"%f",precio);
 							send(s, sendBuff, sizeof(sendBuff), 0);
+
 							sprintf(sendBuff,"%d",stock);
 							send(s, sendBuff, sizeof(sendBuff), 0);
+							*/
 
 						//	limpiarPantalla();
 							break;

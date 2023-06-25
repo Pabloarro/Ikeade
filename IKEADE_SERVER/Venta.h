@@ -4,13 +4,13 @@
 #include "Cliente.h"
 #include "Articulo.h"
 #include "Fecha.h"
-#include "ListaArticulos.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
 typedef struct {
     Cliente* cliente;
-    ListaArticulos* articulos;
+
     Fecha* fecha;
     float precioTotal;
 } Venta;
