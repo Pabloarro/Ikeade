@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <winsock2.h>
 #include <iostream>
+#include <string.h>
 #include <cstdlib>
 #define SERVER_IP "127.0.0.1"
 #define SERVER_PORT 6000
@@ -135,9 +136,9 @@ int main(int argc, char *argv[]) {
 			if(resul==1){
 				do{
 					opcionA = menuAdministrador();
-					sprintf(sendBuff,"%d",opcionA);
+					sprintf(sendBuff,"%c",opcionA);
 					send(s, sendBuff, sizeof(sendBuff), 0);
-
+					strcpy(sendBuff,"h");
 					switch(opcionA){
 						case '1':
 							cout<<"Introduce un id: ";cin>>id;
@@ -163,6 +164,7 @@ int main(int argc, char *argv[]) {
 							cout<<"Introduce el id del articulo que quieres borrar";cin>>id;
 							sprintf(sendBuff,"%d",id);
 							send(s, sendBuff, sizeof(sendBuff), 0);
+
 
 							break;
 						case '3':

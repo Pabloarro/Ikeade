@@ -158,13 +158,16 @@ int main(int argc, char *argv[]) {
                         sprintf(sendBuff, "%d", resul);
                         send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                         loggear("Inicio Sesion ADMIN Exitoso\n");
+
                         do{
 
+
                         	recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-                        	sscanf(recvBuff, "%d", &opcionA);
+                        	sscanf(recvBuff, "%c", &opcionA);
+                        	printf(recvBuff);
                         switch(opcionA){
                         	case '1':
-
+                        		printf(opcionA);
 								recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
 								sscanf(recvBuff, "%d",id);
 								loggear(id);
@@ -180,13 +183,15 @@ int main(int argc, char *argv[]) {
 								 insertarArticulo(a);
 								 loggear("Insertar art");
 								 */
-								break;
+								continue;
                         	case '2':
+                        		mostrarData();
                         		recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                         		sprintf(id, "%d", recvBuff);
+                        		loggear(id);
+                        	//	eliminarArticulo(id);
 
-
-                        		break;
+                        		continue;
 
                         	case '3':
                         		recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
@@ -296,7 +301,7 @@ int main(int argc, char *argv[]) {
 
 
 
-                    break;
+                    continue;
                 case '0':
                     fin = 1;
                     printf("FIN DE LA CONEXIÓN");

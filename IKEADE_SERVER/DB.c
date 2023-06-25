@@ -143,7 +143,7 @@ int eliminarArticulo(int id) {
 
         return 1;
     }
-    char sql[100] = "DELETE FROM nombre_tabla WHERE id = '";
+    char sql[100] = "DELETE FROM articulos WHERE id = '";
         strcat(sql, id);
         strcat(sql, "'");
 
