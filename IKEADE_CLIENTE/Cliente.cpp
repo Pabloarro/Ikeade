@@ -17,7 +17,7 @@ char menu(){
 	cout<<"Elige una opcion: ";
 	cin>>opcion;
 	return opcion;
-	limpiarPantalla();
+	//limpiarPantalla();
 }
 char menuAdministrador(){
 	char opcion;
@@ -37,7 +37,7 @@ char menuCliente(){
 	cout<<"MENU CLIENTE"<<endl;
 	cout<<"1.Comprar Articulos "<<endl;
 	cout<<"2.Devolver articulo"<<endl;
-	cout<<"3.Ver compras"<<endl;
+	cout<<"3.Ver carrito"<<endl;
 	cout<<"0. Salir"<<endl;
 	cout<<"Elige una opci�n: ";
 	cin>>opcion;
@@ -90,7 +90,7 @@ int main(int argc, char *argv[]) {
 	/*EMPIEZA EL PROGRAMA DEL CLIENTE*/
 	char opcion,opcionA,opcionC;
 	char nom[20],con[20],dni[20],tlf[20],art[20],cantidad[20];
-	int resul,id,precio,stock,encontrado,nuevoPrecio;
+	int resul,id,precio,stock,encontrado,nuevoPrecio,resultado_devolucion;
 
 	do{
 		opcion = menu();
@@ -114,7 +114,7 @@ int main(int argc, char *argv[]) {
 			send(s, sendBuff, sizeof(sendBuff), 0); //Env�o la contrase�a al servidor
 			sprintf(sendBuff,"%s",tlf);
 			send(s, sendBuff, sizeof(sendBuff), 0);
-			limpiarPantalla();
+			//limpiarPantalla();
 			// Guardar datos del cliente en la base de datos
 
 			break;
@@ -153,7 +153,7 @@ int main(int argc, char *argv[]) {
 							sprintf(sendBuff,"%d",stock);
 							send(s, sendBuff, sizeof(sendBuff), 0);
 
-							limpiarPantalla();
+						//	limpiarPantalla();
 							break;
 						case '2':
 							cout<<"Introduce el id del articulo que quieres borrar";cin>>id;
@@ -200,9 +200,9 @@ int main(int argc, char *argv[]) {
 					send(s, sendBuff, sizeof(sendBuff), 0);
 					switch(opcionC){
 						case '1':
-						cout<<"Ingrese el nombre o ID del artículo: ";cin>>art;
+						cout<<"ID del artículo: ";cin>>id;
 						cout<<"Ingrese la cantidad: ";cin>>cantidad;
-						sprintf(sendBuff, "%s", art);
+						sprintf(sendBuff, "%s", id);
 						send(s, sendBuff, sizeof(sendBuff), 0);
 						sprintf(sendBuff, "%d", cantidad);
 						send(s, sendBuff, sizeof(sendBuff), 0);
@@ -219,7 +219,7 @@ int main(int argc, char *argv[]) {
 						break;
 
 						case '2':
-					    cout<<"Ingrese el nombre o ID del artículo: ";cin>>art;
+					    cout<<"ID del artículo: ";cin>>art;
 					    cout<<"Ingrese la cantidad a devolver: ";cin>>cantidad;
 
 					    sprintf(sendBuff, "%s", art);
@@ -228,9 +228,9 @@ int main(int argc, char *argv[]) {
 					    send(s, sendBuff, sizeof(sendBuff), 0);
 
 					    recv(s, recvBuff, sizeof(recvBuff), 0);
-					    sscanf(recvBuff, "%d", &resul);
+					    sscanf(recvBuff, "%d", &resultado_devolucion);
 
-					    if (resul == 1) {
+					    if (resultado_devolucion == 1) {
 					        cout << "Devolución realizada con éxito" << endl;
 					    } else {
 					        cout << "No se pudo realizar la devolución" << endl;
@@ -239,11 +239,11 @@ int main(int argc, char *argv[]) {
 					    break;
 
 						case '3':
-						    sprintf(sendBuff, "VER_COMPRAS");
-						    send(s, sendBuff, sizeof(sendBuff), 0);
+
 
 						    recv(s, recvBuff, sizeof(recvBuff), 0);
-						    cout << "Lista de compras:" << endl;
+						    cout << "Carrito:" << endl;
+
 						    cout << recvBuff << endl;
 
 						break;

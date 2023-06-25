@@ -56,3 +56,10 @@ int procesarCompra(Carrito* carrito) {
     printf("Compra procesada exitosamente. Total: %.2f\n", totalCompra);
     return 1;
 }
+void imprimirCarrito(Carrito* carrito) {
+    printf("Carrito:\n");
+    for (int i = 0; i < carrito->cantidad; i++) {
+        Articulo* articulo = carrito->articulos[i];
+        printf("ID: %d, Nombre: %s, Precio: %.2f\n", articulo->id, articulo->nombre, articulo->precio);
+    }
+}

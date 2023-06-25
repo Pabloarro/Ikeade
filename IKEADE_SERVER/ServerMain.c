@@ -98,6 +98,7 @@ int main(int argc, char *argv[]) {
         char nom[20], con[20],dni[20],tlf[20],art[20];
         int resul,id,stock,precio,nuevoPrecio, encontrado;
 
+
         do {
             recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
             sscanf(recvBuff, "%d", &opcion);
@@ -240,14 +241,16 @@ int main(int argc, char *argv[]) {
                                 case '1':
                                     // COMPRAR ARTICULOS
                                     recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-                                    sprintf(art, "%s", recvBuff);
+                                    sprintf(id, "%s", recvBuff);
                                     recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                                     int cantidad;
                                     sscanf(recvBuff, "%d", &cantidad);
-                                    int resultado = procesarCompra(database, art, cantidad);
+                                    Articulo* articulo = buscarArticuloPorId(listaArt, id);
+                                    int resultado = procesarCompra(database, articulo, cantidad);
 
                                     sprintf(sendBuff, "%d", resultado);
                                     send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+                                    Carrito* carrito= agregarArticuloCarrito(carrito, articulo);
                                     break;
                                 case '2':
                                     // DEVOLVER ARTICULO
@@ -256,19 +259,16 @@ int main(int argc, char *argv[]) {
                                     recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                                     int cantidad_devolver;
                                     sscanf(recvBuff, "%d", &cantidad_devolver);
-                                    int resultado_devolucion = procesarDevolucion(database, art, cantidad_devolver);
+                                    Articulo* articulo = buscarArticuloPorId(listaArt, id);
+                                    int resultado_devolucion = procesarDevolucion(database, articulo, cantidad_devolver);
 
                                     sprintf(sendBuff, "%d", resultado_devolucion);
                                     send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                                     break;
                                 case '3':
                                     // VER COMPRAS
-                                    sprintf(sendBuff, "VER_COMPRAS");
-                                    send(comm_socket, sendBuff, sizeof(sendBuff), 0);
-                                    ListaArticulos* listaCompras = obtenerListaCompras(database);
-                                    char listaComprasStr[512];
-                                    convertirListaArticuloAString(listaCompras, listaComprasStr);
-                                    send(comm_socket, listaComprasStr, sizeof(listaComprasStr), 0);
+
+                                    imprimirCarrito(carrito);
                                     break;
                                 case '0':
                                     break;

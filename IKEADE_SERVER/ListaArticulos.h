@@ -17,7 +17,7 @@ Articulo* obtenerArticuloMasCaro(const ListaArticulos* lista);
 Articulo* obtenerArticuloMasBarato(const ListaArticulos* lista);
 void ordenarArticulosPorPrecio(ListaArticulos* lista);
 void imprimirListaArticulos(const ListaArticulos* lista);
-char* convertirListaArticuloAString(const ListaArticulos* lista, char* listaComprasStr);
+char* convertirListaArticuloAString(const ListaArticulos* lista);
 void liberarListaArticulos(ListaArticulos* lista);
 Articulo* buscarArticuloPorId(const ListaArticulos* lista, int id);
 #endif
