@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string.h>
 #include <cstdlib>
+
 #define SERVER_IP "127.0.0.1"
 #define SERVER_PORT 6000
 using namespace std;
@@ -37,8 +38,7 @@ char menuCliente(){
 	char opcion;
 	cout<<"MENU CLIENTE"<<endl;
 	cout<<"1.Comprar Articulos "<<endl;
-	cout<<"2.Devolver articulo"<<endl;
-	cout<<"3.Ver carrito"<<endl;
+	cout<<"2.Ver carrito"<<endl;
 	cout<<"0. Salir"<<endl;
 	cout<<"Elige una opci�n: ";
 	cin>>opcion;
@@ -134,11 +134,11 @@ int main(int argc, char *argv[]) {
 
 
 			if(resul==1){
-				do{
+
 					opcionA = menuAdministrador();
 					sprintf(sendBuff,"%c",opcionA);
 					send(s, sendBuff, sizeof(sendBuff), 0);
-					strcpy(sendBuff,"h");
+
 					switch(opcionA){
 						case '1':
 							cout<<"Introduce un id: ";cin>>id;
@@ -172,17 +172,25 @@ int main(int argc, char *argv[]) {
 							sprintf(sendBuff,"%d",id);
 							send(s, sendBuff, sizeof(sendBuff), 0);
 
-							recv(s, recvBuff, sizeof(recvBuff), 0); //Recibe el resultado del Inicio de Sesi�n
-							sscanf(recvBuff,"%d",&encontrado);
-							if (encontrado==0){
-								cout<<"No se encontro el articulo"<<endl;
-							}else if(encontrado==1){
 
-								cout<<"Introduce un nuevo precio: ";cin>>nuevoPrecio;
+							cout<<"Introduce un id: ";cin>>id;
+							cout<<"Introduce un nombre: ";cin>>art;
+							cout<<"Introduce un precio: ";cin>>precio;
+							cout<<"Introduce el stock: ";cin>>stock;
+							sprintf(sendBuff,"%d",id);
+							send(s, sendBuff, sizeof(sendBuff), 0);
+							/*
+							sprintf(sendBuff,"%s",art);
+							send(s, sendBuff, sizeof(sendBuff), 0);
 
-								sprintf(sendBuff,"%d",nuevoPrecio);
-								send(s, sendBuff, sizeof(sendBuff), 0);
-							}
+							sprintf(sendBuff,"%f",precio);
+							send(s, sendBuff, sizeof(sendBuff), 0);
+
+							sprintf(sendBuff,"%d",stock);
+							send(s, sendBuff, sizeof(sendBuff), 0);
+							*/
+
+
 						case '4':
 
 							break;
@@ -198,14 +206,15 @@ int main(int argc, char *argv[]) {
 						case '0': break;
 						default: cout<<"La opcion no es correcta"<<endl;
 					}
-				}while(opcionA!='0');
+
 			}else if(resul ==2){
-				do{
+
 					opcionC = menuCliente();
 					sprintf(sendBuff,"%c",opcionC);
 					send(s, sendBuff, sizeof(sendBuff), 0);
 					switch(opcionC){
 						case '1':
+
 						cout<<"ID del artículo: ";cin>>id;
 						cout<<"Ingrese la cantidad: ";cin>>cantidad;
 						sprintf(sendBuff, "%s", id);
@@ -224,27 +233,9 @@ int main(int argc, char *argv[]) {
 
 						break;
 
+
+
 						case '2':
-					    cout<<"ID del artículo: ";cin>>art;
-					    cout<<"Ingrese la cantidad a devolver: ";cin>>cantidad;
-
-					    sprintf(sendBuff, "%s", art);
-					    send(s, sendBuff, sizeof(sendBuff), 0);
-					    sprintf(sendBuff, "%d", cantidad);
-					    send(s, sendBuff, sizeof(sendBuff), 0);
-
-					    recv(s, recvBuff, sizeof(recvBuff), 0);
-					    sscanf(recvBuff, "%d", &resultado_devolucion);
-
-					    if (resultado_devolucion == 1) {
-					        cout << "Devolución realizada con éxito" << endl;
-					    } else {
-					        cout << "No se pudo realizar la devolución" << endl;
-					    }
-
-					    break;
-
-						case '3':
 
 
 						    recv(s, recvBuff, sizeof(recvBuff), 0);
@@ -257,7 +248,7 @@ int main(int argc, char *argv[]) {
 						case '0': break;
 						default: cout<<"La opcion no es correcta"<<endl;
 					}
-				}while(opcionC!='0');
+
 			}else{
 				cout<<"El Inicio de Sesion no ha sido correcto"<<endl;
 			}

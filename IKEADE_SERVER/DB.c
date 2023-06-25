@@ -48,8 +48,8 @@ int crearTablas() {
     }
 
 	sql = "DROP TABLE IF EXISTS Venta;"
-                "CREATE TABLE Venta(id INT, cliente_nombre TEXT, fech TEXT, precio_total REAL);"
-                "INSERT INTO Venta VALUES(001, 'Alex', '20/06/2023', 250.50);";
+                "CREATE TABLE Venta(id INT, cliente_nombre TEXT,  precio_total REAL);"
+                "INSERT INTO Venta VALUES(001, 'Alex', 250.50);";
 
     rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
 
@@ -129,6 +129,75 @@ int mostrarData() {
 
     return 0;
 }
+int mostrarVentas() {
+	sqlite3 *db;
+    char *err_msg = 0;
+
+    int rc = sqlite3_open("db.db", &db);
+
+    if (rc != SQLITE_OK) {
+
+        fprintf(stderr, "Cannot open database: %s\n",
+                sqlite3_errmsg(db));
+        sqlite3_close(db);
+
+        return 1;
+    }
+
+    char *sql = "SELECT * FROM Venta";
+
+    rc = sqlite3_exec(db, sql, llamada, 0, &err_msg);
+
+    if (rc != SQLITE_OK ) {
+
+        fprintf(stderr, "Failed to select data\n");
+        fprintf(stderr, "SQL error: %s\n", err_msg);
+
+        sqlite3_free(err_msg);
+        sqlite3_close(db);
+
+        return 1;
+    }
+
+    sqlite3_close(db);
+
+    return 0;
+}
+int mostrarVentasPorCliente(char* nombre) {
+	sqlite3 *db;
+    char *err_msg = 0;
+
+    int rc = sqlite3_open("db.db", &db);
+
+    if (rc != SQLITE_OK) {
+
+        fprintf(stderr, "Cannot open database: %s\n",
+                sqlite3_errmsg(db));
+        sqlite3_close(db);
+
+        return 1;
+    }
+
+    char sql[110] = "SELECT * FROM Venta WHERE cliente_nombre = '";
+    strcat(sql, nombre);
+     strcat(sql, "'");
+    rc = sqlite3_exec(db, sql, llamada, 0, &err_msg);
+
+    if (rc != SQLITE_OK ) {
+
+        fprintf(stderr, "Failed to select data\n");
+        fprintf(stderr, "SQL error: %s\n", err_msg);
+
+        sqlite3_free(err_msg);
+        sqlite3_close(db);
+
+        return 1;
+    }
+
+    sqlite3_close(db);
+
+    return 0;
+}
 int eliminarArticulo(int id) {
 	sqlite3 *db;
     char *err_msg = 0;
@@ -166,56 +235,6 @@ int eliminarArticulo(int id) {
     return 0;
 }
 
-/*Database* createDatabase(const char* filename) {
-    Database* database = (Database*)malloc(sizeof(Database));
-    int rc = sqlite3_open(filename, &(database->db));
-    if (rc != SQLITE_OK) {
-        printf("Error opening database: %s\n", sqlite3_errmsg(database->db));
-        free(database);
-        return NULL;
-    }
-    return database;
-}
-
-int crearTablaCliente(Database* database) {
-    const char* sql = "CREATE TABLE IF NOT EXISTS Cliente (dni INTEGER PRIMARY KEY, nombre TEXT, telefono TEXT, contrasena TEXT)";
-    char* errMsg;
-    int rc = sqlite3_exec(database->db, sql, NULL, 0, &errMsg);
-    if (rc != SQLITE_OK) {
-        printf("Error creating table Cliente: %s\n", errMsg);
-        sqlite3_free(errMsg);
-        return 0;
-    }
-    return 1;
-}
-
-int crearTablaArticulo(Database* database) {
-    const char* sql = "CREATE TABLE IF NOT EXISTS Articulo (id INTEGER PRIMARY KEY, nombre TEXT, precio REAL)";
-    char* errMsg;
-    int rc = sqlite3_exec(database->db, sql, NULL, 0, &errMsg);
-    if (rc != SQLITE_OK) {
-        printf("Error creating table Articulo: %s\n", errMsg);
-        sqlite3_free(errMsg);
-        return 0;
-    }
-    return 1;
-}
-*/
-/*int insertarCliente( const Cliente* cliente) {
-
-    char sql[256];
-    snprintf(sql, sizeof(sql), "INSERT INTO Cliente (dni, nombre, telefono, contrasena) VALUES (%d, '%s', '%s', '%s')",
-             cliente->dni, cliente->nombre, cliente->telefono,cliente->contrasena);
-
-    char* errMsg;
-    int rc = sqlite3_exec(database->db, sql, NULL, 0, &errMsg);
-    if (rc != SQLITE_OK) {
-        printf("Error inserting client: %s\n", errMsg);
-        sqlite3_free(errMsg);
-        return 0;
-    }
-    return 1;
-}*/
 int insertarCliente(const Cliente* cliente){
 	 sqlite3* db;
 	    char* err_msg = 0;
@@ -306,52 +325,51 @@ int insertarArticulo(const Articulo* articulo){
 	    return 0;
 	}
 
+int insertarVenta(const Venta* venta){
+	 sqlite3* db;
+	    char* err_msg = 0;
 
-int modificarArticuloDB(Database* database, int idArticulo, float nuevoPrecio) {
-    char sql[256];
-    snprintf(sql, sizeof(sql), "UPDATE articulos SET precio = %.2f WHERE id = %d", nuevoPrecio, idArticulo);
+	    int rc = sqlite3_open("db.db", &db);
 
-    char* errMsg;
-    int rc = sqlite3_exec(database->db, sql, NULL, 0, &errMsg);
-    if (rc != SQLITE_OK) {
-        printf("Error modifying article: %s\n", errMsg);
-        sqlite3_free(errMsg);
-        return 0;
-    }
-    return 1;
-}
+	    if (rc != SQLITE_OK) {
+
+	        fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db));
+	        sqlite3_close(db);
+
+	        return 1;
+	    }
+
+	    char append[100] = "INSERT INTO Venta VALUES('";
+	    strcat(append, venta->cliente);
+	    strcat(append, "','");
+	    strcat(append, (int)venta->precioTotal);
+	    strcat(append, "');");
+
+
+	    char sql[110];
+	    strcpy(sql, append);
+
+	    rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
+
+	    if (rc != SQLITE_OK) {
+
+	        fprintf(stderr, "SQL error: %s\n", err_msg);
+
+	        sqlite3_free(err_msg);
+	        sqlite3_close(db);
+
+	        return 1;
+	    }
+
+	    sqlite3_close(db);
+
+	    return 0;
+	}
 
 
 
 
-int agregarArticuloCarritoDB(Database* database, int idCliente, int idArticulo) {
-    char sql[256];
-    snprintf(sql, sizeof(sql), "INSERT INTO carrito (cliente_dni , articulo_id) VALUES (%d, %d)", idCliente, idArticulo);
-
-    char* errMsg;
-    int rc = sqlite3_exec(database->db, sql, NULL, 0, &errMsg);
-    if (rc != SQLITE_OK) {
-        printf("Error adding article to cart: %s\n", errMsg);
-        sqlite3_free(errMsg);
-        return 0;
-    }
-    return 1;
-}
-
-int eliminarArticuloCarritoDB(Database* database, int idCliente, int idArticulo) {
-    char sql[256];
-    snprintf(sql, sizeof(sql), "DELETE FROM carrito WHERE cliente_dni = %d AND articulo_id = %d", idCliente, idArticulo);
-
-    char* errMsg;
-    int rc = sqlite3_exec(database->db, sql, NULL, 0, &errMsg);
-    if (rc != SQLITE_OK) {
-        printf("Error removing article from cart: %s\n", errMsg);
-        sqlite3_free(errMsg);
-        return 0;
-    }
-    return 1;
-}
-
+/*
 
 int procesarDevolucion(Database* database, const char* articulo, int cantidad) {
     char query[100];
@@ -385,7 +403,7 @@ int procesarDevolucion(Database* database, const char* articulo, int cantidad) {
     return 1;
 }
 
-
+*/
 int ComprobarInicioSes(char* nom, char* pass) {
     sqlite3* db;
     char* err_msg = 0;

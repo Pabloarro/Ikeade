@@ -96,13 +96,15 @@ int main(int argc, char *argv[]) {
     //crearTablaArticulo(database);
     iniciarLogger();
     loggear("Conexion realizada entre servidor y cliente\n");
-    do {
-        char opcion,opcionC, opcionA;
-        char nom[20], con[20],dni[20],tlf[20],art[20];
-        int resul,id,stock,nuevoPrecio, encontrado,cantidad;
-        float precio;
+    char opcion,opcionC, opcionA;
+    char nom[20], con[20],dni[20],tlf[20],art[20];
+    int resul,id,stock,nuevoPrecio, encontrado,cantidad;
+    float precio;
 
-        do {
+    do {
+
+
+
             recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
             sscanf(recvBuff, "%d", &opcion);
             switch (opcion) {
@@ -159,7 +161,7 @@ int main(int argc, char *argv[]) {
                         send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                         loggear("Inicio Sesion ADMIN Exitoso\n");
 
-                        do{
+
 
 
                         	recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
@@ -197,39 +199,33 @@ int main(int argc, char *argv[]) {
                         		recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                         	    sprintf(id, "%d", recvBuff);
 
+                        	    eliminarArticulo(id);
 
 
-                        	 /*   if (articulo == NULL) {
-                        	    	encontrado=0;
-                        	    	 sprintf(sendBuff, "%d", encontrado);
-                        	    	 send(comm_socket, sendBuff, sizeof(sendBuff), 0);
-                        	        printf("No se encontró el artículo con ID: %d\n", id);
-                        	    } else {
-                        	    	encontrado=1;
-                        	    	sprintf(sendBuff, "%d", encontrado);
-                        	    	send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+								sscanf(recvBuff, "%d",id);
+								loggear(id);
+								recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+								sscanf( recvBuff, "%s",art);
+								recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+								sscanf(recvBuff, "%f", precio);
+								recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+								sscanf( recvBuff, "%d", stock);
 
 
-                        	    	recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-                        	    	sprintf(nuevoPrecio, "%d", recvBuff);
 
-                        	        // Modificar el artículo
+								 Articulo* a =crearArticulo(id, art, precio, stock);
 
-                        	        modificarArticulo(articulo, nuevoPrecio);
-                        	        modificarArticuloDB(database, id,nuevoPrecio);
-                        	        printf("Artículo modificado:\n");
-                        	        printf("ID: %d, Nombre: %s, Precio: %.2f\n", articulo->id, articulo->nombre, articulo->precio);
-                        	    }
+								 insertarArticulo(a);
 
-                        		break;
-                        		*/
 
                         	case'4':
-
+                        		mostrarVentas();
                         		break;
                         	case '5':
                         		recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                         		sprintf(nom, "%s", recvBuff);
+
+                        		mostrarVentasPorCliente(nom);
 
 
                         		break;
@@ -238,7 +234,7 @@ int main(int argc, char *argv[]) {
                         	case '0': break;
 
                         	}
-                        }while(opcionA!='0');
+
 
                     } else if (iniSesion(nom, con) == 0) {
 
@@ -246,7 +242,7 @@ int main(int argc, char *argv[]) {
                         sprintf(sendBuff, "%d", resul);
                         send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                         loggear("Inicio Sesion cliente Exitoso\n");
-                        do{
+
                         	recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                         	sscanf(recvBuff, "%d", &opcionC);
                             switch (opcionC) {
@@ -254,10 +250,12 @@ int main(int argc, char *argv[]) {
                                     // COMPRAR ARTICULOS
                                     recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                                     sprintf(id, "%s", recvBuff);
+
                                     recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
 
-                                    sscanf(recvBuff, "%d", &cantidad);
+                                    sscanf(recvBuff, "%d", cantidad);
 
+                                    Venta* venta= crearVenta2(nom);
 
 
 
@@ -265,23 +263,11 @@ int main(int argc, char *argv[]) {
                                     send(comm_socket, sendBuff, sizeof(sendBuff), 0);
 
                                     break;
+
+
                                 case '2':
-                                    // DEVOLVER ARTICULO
-                                    recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-                                    sprintf(art, "%s", recvBuff);
-                                    recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-                                    int cantidad_devolver;
-                                    sscanf(recvBuff, "%d", &cantidad_devolver);
-
-                                   // int resultado_devolucion = procesarDevolucion(database, articulo, cantidad_devolver);
-
-
-                                    send(comm_socket, sendBuff, sizeof(sendBuff), 0);
-                                    break;
-
-                                case '3':
                                     // VER COMPRAS
-
+                                	mostrarVentasPorCliente(nom);
                                   //  imprimirCarrito(carrito);
                                     break;
                                 case '0':
@@ -292,7 +278,7 @@ int main(int argc, char *argv[]) {
 
                         }
 
-                        }while(opcionC!='0');
+
                     } else {
                         resul = 0;
                         loggear("Inicio Sesion Fallido\n");
@@ -307,7 +293,7 @@ int main(int argc, char *argv[]) {
                     printf("FIN DE LA CONEXIÓN");
                     break;
             }
-        } while (opcion != '0');
+
 
     } while (fin == 0);
     loggear("Programa Finalizado\n\n");

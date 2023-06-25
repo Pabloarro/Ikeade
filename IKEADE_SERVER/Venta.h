@@ -10,12 +10,12 @@
 
 typedef struct {
     Cliente* cliente;
-
-    Fecha* fecha;
     float precioTotal;
+    char* nombre;
 } Venta;
 
-Venta* crearVenta(Cliente* cliente, Fecha* fecha);
+Venta* crearVenta(Cliente* cliente);
+Venta* crearVenta2(char* nombre);
 void agregarArticulo(Venta* venta, Articulo* articulo);
 void calcularPrecioTotal(Venta* venta);
 void imprimirVenta(Venta* venta);

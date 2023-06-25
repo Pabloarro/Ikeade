@@ -4,6 +4,7 @@
 #include "sqlite3.h"
 #include "Articulo.h"
 #include "Cliente.h"
+#include "Venta.h"
 
 
 typedef struct {
@@ -18,11 +19,11 @@ int insertarCliente(const Cliente* cliente);
 int insertarArticulo(const Articulo* articulo);
 int eliminarArticulo(int id);
 
-int modificarArticuloDB(Database* database, int idArticulo, float nuevoPrecio);
 
-int agregarArticuloCarritoDB(Database* database, int idCliente, int idArticulo);
-int eliminarArticuloCarritoDB(Database* database, int idCliente, int idArticulo);
-int procesarDevolucion(Database* database, const char* articulo, int cantidad);
+
 void closeDatabase(Database* database);
 int ComprobarInicioSes(char* nom, char* pass);
+int mostrarData();
+int mostrarVentas();
+int mostrarVentasPorCliente(char* nombre);
 #endif
