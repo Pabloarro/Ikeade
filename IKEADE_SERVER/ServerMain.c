@@ -19,6 +19,8 @@ int main(int argc, char *argv[]) {
     struct sockaddr_in client;
     char sendBuff[512], recvBuff[512];
 
+    Database* database = crearTablas();
+
     printf("\nInitialising Winsock...\n");
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
         printf("Failed. Error Code: %d", WSAGetLastError());
@@ -68,11 +70,11 @@ int main(int argc, char *argv[]) {
 
     closesocket(conn_socket);
     int fin = 0;
-    Database* database= createDatabase("db.db");
+    //Database* database= createDatabase("db.db");
     ListaArticulos* listaArt= crearListaArticulos();
     Gestor* gestor= crearGestor();
-    crearTablaCliente(database);
-    crearTablaArticulo(database);
+    //crearTablaCliente(database);
+    //crearTablaArticulo(database);
     iniciarLogger();
     loggear("Conexion realizada entre servidor y cliente\n");
     do {

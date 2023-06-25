@@ -1,7 +1,88 @@
 #include "DB.h"
 #include <stdio.h>
 
-Database* createDatabase(const char* filename) {
+Database* crearTablas() {
+    sqlite3 *db;
+    char *err_msg = 0;
+
+    int rc = sqlite3_open("dB.db", &db);
+
+    if (rc != SQLITE_OK) {
+
+        fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+
+        return 1;
+    }
+
+    char *sql = "DROP TABLE IF EXISTS Cliente;"
+                "CREATE TABLE Cliente(dni INT, nombre TEXT, telefono TEXT, contrasena TEXT);"
+                "INSERT INTO Cliente VALUES(123, 'Alex', '235689', '111');";
+
+    rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
+
+    if (rc != SQLITE_OK ) {
+
+        fprintf(stderr, "SQL error: %s\n", err_msg);
+
+        sqlite3_free(err_msg);
+        sqlite3_close(db);
+
+        return 1;
+    }
+
+	sql = "DROP TABLE IF EXISTS articulos;"
+                "CREATE TABLE articulos(id INT, nombre TEXT, precio REAL, stock INT);"
+                "INSERT INTO articulos VALUES(A1, 'Cama Malm', 250.50, 10);";
+
+    rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
+
+    if (rc != SQLITE_OK ) {
+
+        fprintf(stderr, "SQL error: %s\n", err_msg);
+
+        sqlite3_free(err_msg);
+        sqlite3_close(db);
+
+        return 1;
+    }
+
+	sql = "DROP TABLE IF EXISTS Venta;"
+                "CREATE TABLE Venta(id INT, cliente_nombre TEXT, fech TEXT, precio_total REAL);"
+                "INSERT INTO Venta VALUES(V1, 'Alex', '20/06/2023', 250.50);";
+
+    rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
+
+    if (rc != SQLITE_OK ) {
+
+        fprintf(stderr, "SQL error: %s\n", err_msg);
+
+        sqlite3_free(err_msg);
+        sqlite3_close(db);
+
+        return 1;
+    }
+
+	sql = "DROP TABLE IF EXISTS carrito;"
+                "CREATE TABLE carrito(cliente_dni , articulo_id);";
+
+    rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
+
+    if (rc != SQLITE_OK ) {
+
+        fprintf(stderr, "SQL error: %s\n", err_msg);
+
+        sqlite3_free(err_msg);
+        sqlite3_close(db);
+
+        return 1;
+    }
+
+    sqlite3_close(db);
+
+    return 0;
+}
+/*Database* createDatabase(const char* filename) {
     Database* database = (Database*)malloc(sizeof(Database));
     int rc = sqlite3_open(filename, &(database->db));
     if (rc != SQLITE_OK) {
@@ -35,10 +116,10 @@ int crearTablaArticulo(Database* database) {
     }
     return 1;
 }
-
+*/
 int insertarCliente(Database* database, const Cliente* cliente) {
     char sql[256];
-    snprintf(sql, sizeof(sql), "INSERT INTO Cliente (dni, nombre, telefono,contrasena) VALUES (%d, '%s', '%s', '%s')",
+    snprintf(sql, sizeof(sql), "INSERT INTO Cliente (dni, nombre, telefono, contrasena) VALUES (%d, '%s', '%s', '%s')",
              cliente->dni, cliente->nombre, cliente->telefono,cliente->contrasena);
 
     char* errMsg;
@@ -114,7 +195,7 @@ int insertarListaArticulos(Database* database, const ListaArticulos* listaArticu
 
 int agregarArticuloCarritoDB(Database* database, int idCliente, int idArticulo) {
     char sql[256];
-    snprintf(sql, sizeof(sql), "INSERT INTO carrito (id_cliente, id_articulo) VALUES (%d, %d)", idCliente, idArticulo);
+    snprintf(sql, sizeof(sql), "INSERT INTO carrito (cliente_dni , articulo_id) VALUES (%d, %d)", idCliente, idArticulo);
 
     char* errMsg;
     int rc = sqlite3_exec(database->db, sql, NULL, 0, &errMsg);
@@ -128,7 +209,7 @@ int agregarArticuloCarritoDB(Database* database, int idCliente, int idArticulo) 
 
 int eliminarArticuloCarritoDB(Database* database, int idCliente, int idArticulo) {
     char sql[256];
-    snprintf(sql, sizeof(sql), "DELETE FROM carrito WHERE id_cliente = %d AND id_articulo = %d", idCliente, idArticulo);
+    snprintf(sql, sizeof(sql), "DELETE FROM carrito WHERE cliente_dni = %d AND articulo_id = %d", idCliente, idArticulo);
 
     char* errMsg;
     int rc = sqlite3_exec(database->db, sql, NULL, 0, &errMsg);
@@ -227,7 +308,7 @@ int ComprobarInicioSes(char* nom, char* pass) {
     char* err_msg = 0;
     sqlite3_stmt* res;
 
-    int rc = sqlite3_open("../db.db", &db);
+    int rc = sqlite3_open("db.db", &db);
 
     if (rc != SQLITE_OK) {
 
@@ -237,7 +318,7 @@ int ComprobarInicioSes(char* nom, char* pass) {
         return 1;
     }
 
-    char sql[100] = "SELECT Name, Pass FROM Usuario WHERE Name = '";
+    char sql[100] = "SELECT Name, Pass FROM Cliente WHERE Name = '";
     strcat(sql, nom);
     strcat(sql, "'");
 

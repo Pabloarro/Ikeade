@@ -8,12 +8,12 @@
 typedef struct {
 	int dni;
 	char* nombre;
-	char* contrasena;
 	char* telefono;
+	char* contrasena;
 
 }Cliente;
 
-Cliente* crearCliente(int dni, const char* nombre, const char* contrasena, const char* telefono);
+Cliente* crearCliente(int dni, const char* nombre, const char* telefono, const char* contrasena);
 int iniciarSesion(const char* filename);
 void registrarCliente(Cliente** clientes, int* numClientes);
 void pedirCliente(Cliente** cliente);
