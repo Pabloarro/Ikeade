@@ -1,11 +1,11 @@
 #include "DB.h"
 #include <stdio.h>
 
-int crearTablas(Database* database) {
+int crearTablas() {
     sqlite3 *db;
     char *err_msg = 0;
 
-    int rc = sqlite3_open("dB.db", &db);
+    int rc = sqlite3_open("db.db", &db);
 
     if (rc != SQLITE_OK) {
 
@@ -16,7 +16,7 @@ int crearTablas(Database* database) {
     }
 
     char *sql = "DROP TABLE IF EXISTS Cliente;"
-                "CREATE TABLE Cliente(dni INT, nombre TEXT, telefono TEXT, contrasena TEXT);"
+                "CREATE TABLE Cliente(dni INT, Name TEXT, telefono TEXT, Pass TEXT);"
                 "INSERT INTO Cliente VALUES(123, 'Alex', '235689', '111');";
 
     rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
@@ -33,7 +33,7 @@ int crearTablas(Database* database) {
 
 	sql = "DROP TABLE IF EXISTS articulos;"
                 "CREATE TABLE articulos(id INT, nombre TEXT, precio REAL, stock INT);"
-                "INSERT INTO articulos VALUES(A1, 'Cama Malm', 250.50, 10);";
+                "INSERT INTO articulos VALUES(01, 'Cama Malm', 250.50, 10);";
 
     rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
 
@@ -49,7 +49,7 @@ int crearTablas(Database* database) {
 
 	sql = "DROP TABLE IF EXISTS Venta;"
                 "CREATE TABLE Venta(id INT, cliente_nombre TEXT, fech TEXT, precio_total REAL);"
-                "INSERT INTO Venta VALUES(V1, 'Alex', '20/06/2023', 250.50);";
+                "INSERT INTO Venta VALUES(001, 'Alex', '20/06/2023', 250.50);";
 
     rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
 

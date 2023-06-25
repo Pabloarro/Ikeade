@@ -4,6 +4,7 @@
 #include <winsock2.h>
 #include "Cliente.h"
 #include "Articulo.h"
+#include "sqlite3.h"
 #include "DB.h"
 #include "Gestor.h"
 #include "ListaArticulos.h"
@@ -19,23 +20,22 @@ int main(int argc, char *argv[]) {
     struct sockaddr_in client;
     char sendBuff[512], recvBuff[512];
 
-    //Database* database = crearTablas();
+   /* //Database* database = crearTablas();
     // Crea la base de datos
-    Database* database = createDatabase("db.db");
+    Database* database = crearTablas();
     if (database == NULL) {
         printf("Error creating database\n");
         return -1;
     }
 
-    // Crea la tabla "Venta" en la base de datos
-    if (!crearTablaVenta(database)) {
-        printf("Error creating table Venta\n");
-        closeDatabase(database);
-        return -1;
-    }
 
     // Crea las demás tablas en la base de datos
     crearTablas(database);
+*/
+    Database* database;
+
+        // Crea las tablas en la base de datos
+        crearTablas(&database);
 
     printf("\nInitialising Winsock...\n");
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
