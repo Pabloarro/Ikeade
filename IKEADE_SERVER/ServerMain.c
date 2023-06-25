@@ -147,13 +147,17 @@ int main(int argc, char *argv[]) {
                         	        printf("No se encontró el artículo con ID: %d\n", id);
                         	    } else {
                         	    	encontrado=1;
-                        	    	recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-                        	    	sprintf(nuevoNombre, "%s", recvBuff);
+                        	    	sprintf(sendBuff, "%d", encontrado);
+                        	    	send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+
+
                         	    	recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                         	    	sprintf(nuevoPrecio, "%d", recvBuff);
 
                         	        // Modificar el artículo
+
                         	        modificarArticulo(articulo, nuevoNombre, nuevoPrecio);
+                        	        modificarArticuloDB(database, id,nuevoPrecio);
                         	        printf("Artículo modificado:\n");
                         	        printf("ID: %d, Nombre: %s, Precio: %.2f\n", articulo->id, articulo->nombre, articulo->precio);
                         	    }
