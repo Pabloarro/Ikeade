@@ -74,7 +74,7 @@ int main(int argc, char *argv[]) {
     do {
         char opcion,opcionC, opcionA;
         char nom[20], con[20],dni[20],tlf[20],art[20],nuevoNombre[20];
-        int resul,id,stock,precio,nuevoPrecio;;
+        int resul,id,stock,precio,nuevoPrecio, encontrado;
 
         do {
             recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
@@ -138,11 +138,15 @@ int main(int argc, char *argv[]) {
                         		recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                         	    sprintf(id, "%d", recvBuff);
 
-                        	    Articulo* articulo=buscarArticuloPorId(listaArt, id);
+                        	    Articulo* articulo = buscarArticuloPorId(listaArt, id);
 
                         	    if (articulo == NULL) {
+                        	    	encontrado=0;
+                        	    	 sprintf(sendBuff, "%d", encontrado);
+                        	    	 send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                         	        printf("No se encontró el artículo con ID: %d\n", id);
                         	    } else {
+                        	    	encontrado=1;
                         	    	recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                         	    	sprintf(nuevoNombre, "%s", recvBuff);
                         	    	recv(comm_socket, recvBuff, sizeof(recvBuff), 0);

@@ -17,10 +17,8 @@ void anyadirArticulo(Articulo** listaArticulos, int* cantidadArticulos, Articulo
 }
 
 
-void modificarArticulo(Articulo* articulo, const char* nombre, float precio) {
-    free(articulo->nombre);
-    articulo->nombre = (char*)malloc((strlen(nombre) + 1) * sizeof(char));
-    strcpy(articulo->nombre, nombre);
+void modificarArticulo(Articulo* articulo, float precio) {
+
     articulo->precio = precio;
 }
 

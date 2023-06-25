@@ -85,8 +85,8 @@ int main(int argc, char *argv[]) {
 
 	/*EMPIEZA EL PROGRAMA DEL CLIENTE*/
 	char opcion,opcionA,opcionC;
-	char nom[20],con[20],dni[20],tlf[20],art[20],cantidad[20];
-	int resul,id,precio,stock;
+	char nom[20],con[20],dni[20],tlf[20],art[20],cantidad[20],nuevoNombre[20];
+	int resul,id,precio,stock,encontrado,nuevoPrecio;
 
 	do{
 		opcion = menu();
@@ -146,6 +146,38 @@ int main(int argc, char *argv[]) {
 
 							break;
 						case '2':
+							cout<<"Introduce el id del articulo que quieres borrar";cin>>id;
+							sprintf(sendBuff,"%d",id);
+							send(s, sendBuff, sizeof(sendBuff), 0);
+
+							break;
+						case '3':
+							cout<<"Introduce el id del articulo que quieres modificar";cin>>id;
+							sprintf(sendBuff,"%d",id);
+							send(s, sendBuff, sizeof(sendBuff), 0);
+
+							recv(s, recvBuff, sizeof(recvBuff), 0); //Recibe el resultado del Inicio de Sesi�n
+							sscanf(recvBuff,"%d",&encontrado);
+							if (encontrado==0){
+								cout<<"No se encontro el articulo"<<endl;
+							}else if(encontrado==1){
+
+								cout<<"Introduce un nuevo precio: ";cin>>nuevoPrecio;
+
+								sprintf(sendBuff,"%d",nuevoPrecio);
+								send(s, sendBuff, sizeof(sendBuff), 0);
+							}
+						case '4':
+
+							break;
+						case '5':
+							cout<<"Introduce el nombre de la persona que quieras ver sus compras: ";cin>>nom;
+							sprintf(sendBuff,"%s",nom);
+							send(s, sendBuff, sizeof(sendBuff), 0);
+
+
+							break;
+
 							break;
 						case '0': break;
 						default: cout<<"La opcion no es correcta"<<endl;
