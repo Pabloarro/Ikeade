@@ -70,6 +70,8 @@ int main(int argc, char *argv[]) {
     Database* database= createDatabase("db.db");
     ListaArticulos* listaArt= crearListaArticulos();
     Gestor* gestor= crearGestor();
+    crearTablaCliente(database);
+    crearTablaArticulo(database);
 
     do {
         char opcion,opcionC, opcionA;

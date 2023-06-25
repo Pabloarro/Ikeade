@@ -12,6 +12,30 @@ Database* createDatabase(const char* filename) {
     return database;
 }
 
+int crearTablaCliente(Database* database) {
+    const char* sql = "CREATE TABLE IF NOT EXISTS Cliente (dni INTEGER PRIMARY KEY, nombre TEXT, telefono TEXT, contrasena TEXT)";
+    char* errMsg;
+    int rc = sqlite3_exec(database->db, sql, NULL, 0, &errMsg);
+    if (rc != SQLITE_OK) {
+        printf("Error creating table Cliente: %s\n", errMsg);
+        sqlite3_free(errMsg);
+        return 0;
+    }
+    return 1;
+}
+
+int crearTablaArticulo(Database* database) {
+    const char* sql = "CREATE TABLE IF NOT EXISTS Articulo (id INTEGER PRIMARY KEY, nombre TEXT, precio REAL)";
+    char* errMsg;
+    int rc = sqlite3_exec(database->db, sql, NULL, 0, &errMsg);
+    if (rc != SQLITE_OK) {
+        printf("Error creating table Articulo: %s\n", errMsg);
+        sqlite3_free(errMsg);
+        return 0;
+    }
+    return 1;
+}
+
 int insertarCliente(Database* database, const Cliente* cliente) {
     char sql[256];
     snprintf(sql, sizeof(sql), "INSERT INTO Cliente (dni, nombre, telefono,contrasena) VALUES (%d, '%s', '%s', '%s')",
