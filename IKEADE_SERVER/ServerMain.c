@@ -6,6 +6,7 @@
 #include "Articulo.h"
 #include "sqlite3.h"
 #include "DB.h"
+#include "Carrito.h"
 #include "Gestor.h"
 #include "ListaArticulos.h"
 #include "log.h"
@@ -129,11 +130,12 @@ int main(int argc, char *argv[]) {
                 	  loggear(tlf);
                 	  loggear("\n");
                 	  Cliente* c =crearCliente(dni, nom, con, tlf);
-                	  insertarCliente(database, c);
+                	  insertarCliente(c);
+
+                	  loggear("Hola");
 
 
-
-                	  break;
+                	 continue;
                 case '2':
                 	//INICIAR SESION
                 	loggear("Iniciar Sesion\n");
@@ -172,7 +174,7 @@ int main(int argc, char *argv[]) {
 								 Articulo* a =crearArticulo(id, art, precio, stock);
 								 insertarArticulo(database, a);
 
-								 break;
+								 continue;
                         	case '2':
                         		recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                         		sprintf(id, "%s", recvBuff);
@@ -238,7 +240,7 @@ int main(int argc, char *argv[]) {
                         	recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                         	sscanf(recvBuff, "%d", &opcionC);
                             switch (opcionC) {
-                                case '1':
+                               /* case '1':
                                     // COMPRAR ARTICULOS
                                     recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                                     sprintf(id, "%s", recvBuff);
@@ -250,7 +252,7 @@ int main(int argc, char *argv[]) {
 
                                     sprintf(sendBuff, "%d", resultado);
                                     send(comm_socket, sendBuff, sizeof(sendBuff), 0);
-                                    Carrito* carrito= agregarArticuloCarrito(carrito, articulo);
+                                    agregarArticuloCarrito(carrito, articulo);
                                     break;
                                 case '2':
                                     // DEVOLVER ARTICULO
@@ -265,10 +267,11 @@ int main(int argc, char *argv[]) {
                                     sprintf(sendBuff, "%d", resultado_devolucion);
                                     send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                                     break;
+                                    */
                                 case '3':
                                     // VER COMPRAS
 
-                                    imprimirCarrito(carrito);
+                                  //  imprimirCarrito(carrito);
                                     break;
                                 case '0':
                                     break;

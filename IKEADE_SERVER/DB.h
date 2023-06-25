@@ -14,7 +14,7 @@ int crearTablas();
 /*Database* createDatabase(const char* filename);
 int crearTablaCliente(Database* database);
 int crearTablaArticulo(Database* database)*/
-int insertarCliente(Database* database, const Cliente* cliente);
+int insertarCliente(const Cliente* cliente);
 int insertarArticulo(Database* database, const Articulo* articulo);
 int modificarArticuloDB(Database* database, int idArticulo, float nuevoPrecio);
 int eliminarArticulo(Database* database, int idArticulo);

@@ -117,7 +117,8 @@ int crearTablaArticulo(Database* database) {
     return 1;
 }
 */
-int insertarCliente(Database* database, const Cliente* cliente) {
+/*int insertarCliente( const Cliente* cliente) {
+
     char sql[256];
     snprintf(sql, sizeof(sql), "INSERT INTO Cliente (dni, nombre, telefono, contrasena) VALUES (%d, '%s', '%s', '%s')",
              cliente->dni, cliente->nombre, cliente->telefono,cliente->contrasena);
@@ -130,7 +131,51 @@ int insertarCliente(Database* database, const Cliente* cliente) {
         return 0;
     }
     return 1;
-}
+}*/
+int insertarCliente(const Cliente* cliente){
+	 sqlite3* db;
+	    char* err_msg = 0;
+
+	    int rc = sqlite3_open("db.db", &db);
+
+	    if (rc != SQLITE_OK) {
+
+	        fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db));
+	        sqlite3_close(db);
+
+	        return 1;
+	    }
+
+	    char append[100] = "INSERT INTO Cliente VALUES('";
+	    strcat(append, cliente->dni);
+	    strcat(append, "','");
+	    strcat(append, cliente->nombre);
+	    strcat(append, "','");
+	    strcat(append, cliente->telefono);
+	    strcat(append, "','");
+	    strcat(append, cliente->contrasena);
+	    strcat(append, "');");
+
+	    char sql[110];
+	    strcpy(sql, append);
+
+	    rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
+
+	    if (rc != SQLITE_OK) {
+
+	        fprintf(stderr, "SQL error: %s\n", err_msg);
+
+	        sqlite3_free(err_msg);
+	        sqlite3_close(db);
+
+	        return 1;
+	    }
+
+	    sqlite3_close(db);
+
+	    return 0;
+	}
+
 
 int insertarArticulo(Database* database, const Articulo* articulo) {
     char sql[256];
