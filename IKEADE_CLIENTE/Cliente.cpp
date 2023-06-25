@@ -1,11 +1,14 @@
 #include <stdio.h>
 #include <winsock2.h>
 #include <iostream>
+#include <cstdlib>
 #define SERVER_IP "127.0.0.1"
 #define SERVER_PORT 6000
 using namespace std;
 
-
+void limpiarPantalla() {
+    system("cls");
+}
 char menu(){
 	char opcion;
 	cout<<"1. Registrarse"<<endl;
@@ -14,6 +17,7 @@ char menu(){
 	cout<<"Elige una opcion: ";
 	cin>>opcion;
 	return opcion;
+	limpiarPantalla();
 }
 char menuAdministrador(){
 	char opcion;
@@ -110,7 +114,7 @@ int main(int argc, char *argv[]) {
 			send(s, sendBuff, sizeof(sendBuff), 0); //Env�o la contrase�a al servidor
 			sprintf(sendBuff,"%s",tlf);
 			send(s, sendBuff, sizeof(sendBuff), 0);
-
+			limpiarPantalla();
 			// Guardar datos del cliente en la base de datos
 
 			break;
@@ -123,10 +127,11 @@ int main(int argc, char *argv[]) {
 			send(s, sendBuff, sizeof(sendBuff), 0); //Env�o el nombre al servidor
 			sprintf(sendBuff,"%s",con);
 			send(s, sendBuff, sizeof(sendBuff), 0); //Env�o la contrase�a al servidor
-			cout<<sendBuff;
+
 			recv(s, recvBuff, sizeof(recvBuff), 0); //Recibe el resultado del Inicio de Sesi�n
 			sscanf(recvBuff,"%d",&resul);
-			cout<<"RESULTADO: "<<resul<<endl;
+
+
 			if(resul==1){
 				do{
 					opcionA = menuAdministrador();
@@ -148,7 +153,7 @@ int main(int argc, char *argv[]) {
 							sprintf(sendBuff,"%d",stock);
 							send(s, sendBuff, sizeof(sendBuff), 0);
 
-
+							limpiarPantalla();
 							break;
 						case '2':
 							cout<<"Introduce el id del articulo que quieres borrar";cin>>id;

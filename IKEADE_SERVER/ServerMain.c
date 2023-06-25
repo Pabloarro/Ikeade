@@ -73,7 +73,8 @@ int main(int argc, char *argv[]) {
     Gestor* gestor= crearGestor();
     crearTablaCliente(database);
     crearTablaArticulo(database);
-
+    iniciarLogger();
+    loggear("Conexion realizada entre servidor y cliente\n");
     do {
         char opcion,opcionC, opcionA;
         char nom[20], con[20],dni[20],tlf[20],art[20];
@@ -133,6 +134,7 @@ int main(int argc, char *argv[]) {
                         resul = 1;
                         sprintf(sendBuff, "%d", resul);
                         send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+                        loggear("Inicio Sesion ADMIN Exitoso\n");
                         do{
 
                         	recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
@@ -212,6 +214,7 @@ int main(int argc, char *argv[]) {
                         resul = 2;
                         sprintf(sendBuff, "%d", resul);
                         send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+                        loggear("Inicio Sesion cliente Exitoso\n");
                         do{
                         	recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                         	sscanf(recvBuff, "%d", &opcionC);
@@ -260,6 +263,7 @@ int main(int argc, char *argv[]) {
                         }while(opcionC!='0');
                     } else {
                         resul = 0;
+                        loggear("Inicio Sesion Fallido\n");
                     }
 
 
@@ -274,7 +278,8 @@ int main(int argc, char *argv[]) {
         } while (opcion != '0');
 
     } while (fin == 0);
-
+    loggear("Programa Finalizado\n\n");
+    printf("Programa Finalizado\n");
     closesocket(comm_socket);
     WSACleanup();
 
