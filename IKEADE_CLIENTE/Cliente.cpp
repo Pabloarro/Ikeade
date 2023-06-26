@@ -50,8 +50,8 @@ char menuCliente(){
 
 int main(int argc, char *argv[]) {
 
-	char nom[20],con[20],dni[20],tlf[20],art[20],cantidad[20];
-	int resul,id,stock,encontrado,nuevoPrecio,opcion,opcionA,opcionC,precio;
+	char nom[20],con[20],dni[20],tlf[20],art[20];
+	int resul,id,stock,encontrado,nuevoPrecio,opcion,opcionA,opcionC,precio,cantidad;
 
 	WSADATA wsaData;
 	SOCKET s;
@@ -222,7 +222,7 @@ int main(int argc, char *argv[]) {
 						cout<<"Ingrese la cantidad: ";cin>>cantidad;
 						sprintf(sendBuff, "%d", id);
 						send(s, sendBuff, sizeof(sendBuff), 0);
-						sprintf(sendBuff, "%s", cantidad);
+						sprintf(sendBuff, "%d", cantidad);
 						send(s, sendBuff, sizeof(sendBuff), 0);
 
 

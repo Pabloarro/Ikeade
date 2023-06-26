@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
     Database* database;
 
         // Crea las tablas en la base de datos
-    if (FALSE){
+    if (TRUE){
     	crearTablas();
     }
 
@@ -259,11 +259,11 @@ int main(int argc, char *argv[]) {
                                     sscanf(recvBuff, "%d",&id);
 
                                     recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-
                                     sscanf(recvBuff, "%d", &cantidad);
-                                    printf("ANTES DE CREAR\n");
-                                    Venta* venta= crearVenta2(nom);
 
+                                    printf("ANTES DE CREAR\n");
+                                    Venta* venta= crearVenta(id,nom,cantidad);
+                                    insertarVenta(venta);
                                     printf("DESPUES DE CREAR");
 
 

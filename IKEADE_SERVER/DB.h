@@ -18,7 +18,7 @@ int crearTablaArticulo(Database* database)*/
 int insertarCliente(const Cliente* cliente);
 int insertarArticulo(const Articulo* articulo);
 int eliminarArticulo(int id);
-
+int insertarVenta(const Venta* venta);
 
 
 void closeDatabase(Database* database);

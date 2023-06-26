@@ -9,13 +9,14 @@
 #include <stdlib.h>
 
 typedef struct {
-    Cliente* cliente;
-    float precioTotal;
-    char* nombre;
+    int id;
+
+    char* cliente;
+    int cantidad;
 } Venta;
 
-Venta* crearVenta(Cliente* cliente);
-Venta* crearVenta2(char* nombre);
+Venta* crearVenta( int id, char* cliente, int cantidad );
+
 void agregarArticulo(Venta* venta, Articulo* articulo);
 void calcularPrecioTotal(Venta* venta);
 void imprimirVenta(Venta* venta);

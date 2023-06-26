@@ -50,7 +50,7 @@ int crearTablas() {
     }
 
 	sql = "DROP TABLE IF EXISTS Venta;"
-                "CREATE TABLE Venta(id INT, cliente_nombre TEXT,  precio_total REAL);"
+                "CREATE TABLE Venta(id INT, nombre TEXT,  cantidad INT);"
             	"INSERT INTO Venta VALUES(1, 'Alex', 250);"
 				"INSERT INTO Venta VALUES(2, 'Pablo', 120);";
 
@@ -356,7 +356,7 @@ int insertarVenta(const Venta* venta){
 
 	    char append[100];
 
-	   	    sprintf(append,"INSERT INTO Venta VALUES(%d,'%s');",venta->nombre,venta->precioTotal);
+	   	    sprintf(append,"INSERT INTO Venta VALUES(%d,'%s',%d);",venta->id,venta->cliente,venta->cantidad);
 
 	    char sql[110];
 	    strcpy(sql, append);
