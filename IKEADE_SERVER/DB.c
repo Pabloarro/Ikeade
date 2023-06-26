@@ -181,7 +181,7 @@ int mostrarVentasPorCliente(char* nombre) {
         return 1;
     }
 
-    char sql[110] = "SELECT * FROM Venta WHERE cliente_nombre = '";
+    char sql[110] = "SELECT * FROM Venta WHERE nombre = '";
     strcat(sql, nombre);
      strcat(sql, "'");
     rc = sqlite3_exec(db, sql, llamada, 0, &err_msg);

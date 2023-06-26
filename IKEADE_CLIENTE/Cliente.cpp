@@ -136,6 +136,7 @@ int main(int argc, char *argv[]) {
 
 
 			if(resul==1){
+				do{
 
 					opcionA = menuAdministrador();
 					sprintf(sendBuff,"%d",opcionA);
@@ -160,6 +161,7 @@ int main(int argc, char *argv[]) {
 							send(s, sendBuff, sizeof(sendBuff), 0);
 
 
+							cout<<"Articulo "<<art<<" creado"<<endl;
 
 							break;
 						case 2:
@@ -208,9 +210,9 @@ int main(int argc, char *argv[]) {
 						case 0: break;
 						default: cout<<"La opcion no es correcta"<<endl;
 					}
-
+				}while(opcionA!=0);
 			}else if(resul ==2){
-
+				do{
 					opcionC = menuCliente();
 					sprintf(sendBuff,"%d",opcionC);
 					send(s, sendBuff, sizeof(sendBuff), 0);
@@ -232,24 +234,19 @@ int main(int argc, char *argv[]) {
 
 						case 2:
 
-
-						    recv(s, recvBuff, sizeof(recvBuff), 0);
-						    cout << "Carrito:" << endl;
-
-						    cout << recvBuff << endl;
-
 						break;
 
 						case 0: break;
 						default: cout<<"La opcion no es correcta"<<endl;
 					}
-
+				}while(opcionC!=0);
 			}else{
 				cout<<"El Inicio de Sesion no ha sido correcto"<<endl;
 			}
 			break;
 		case '0': cout<<"AGUR"<<endl;break;
 		default: cout<<"La opcion seleccionada no es correcta"<<endl;
+
 		}
 
 	}while(opcion!='0');

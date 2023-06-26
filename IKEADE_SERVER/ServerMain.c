@@ -140,9 +140,10 @@ int main(int argc, char *argv[]) {
                         send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                         loggear("Inicio Sesion ADMIN Exitoso\n");
 
+
                         	recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                         	sscanf(recvBuff, "%d", &opcionA);
-
+                        	do{
                         switch(opcionA){
 
                         	case 1:
@@ -162,6 +163,7 @@ int main(int argc, char *argv[]) {
 
 								Articulo* a =crearArticulo(id, art, precio, stock);
 								insertarArticulo(a);
+
 
 								break;
                         	case 2:
@@ -209,10 +211,10 @@ int main(int argc, char *argv[]) {
                         	case 0: break;
 
                         	}
-
+                        	}while(opcionA!=0);
 
                     } else if (iniSesion(nom, con) == 0) {
-
+                    	do{
                         resul = 2;
                         sprintf(sendBuff, "%d", resul);
                         send(comm_socket, sendBuff, sizeof(sendBuff), 0);
@@ -248,7 +250,7 @@ int main(int argc, char *argv[]) {
 
                         }
 
-
+                    	}while(opcionC!=0);
                     } else {
                         resul = 0;
                         loggear("Inicio Sesion Fallido\n");
