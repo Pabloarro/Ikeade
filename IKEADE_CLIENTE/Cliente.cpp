@@ -19,7 +19,7 @@ char menu(){
 	cout<<"0. Salir"<<endl;
 	cout<<"Elige una opcion: ";
 	cin>>opcion;
-	cout<<opcion;
+
 	return opcion;
 	//limpiarPantalla();
 }
@@ -125,8 +125,7 @@ int main(int argc, char *argv[]) {
 		case '2':
 			cout<<"NOMBRE: ";cin>>nom;
 			cout<<"CONTRASENYA: ";cin>>con;
-			cout<<nom;
-			cout<<con;
+
 			sprintf(sendBuff,"%s",nom);
 			send(s, sendBuff, sizeof(sendBuff), 0);
 			sprintf(sendBuff,"%s",con);
@@ -229,7 +228,7 @@ int main(int argc, char *argv[]) {
 
 
 
-
+						break;
 
 						case 2:
 

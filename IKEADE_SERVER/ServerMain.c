@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
 
     Database* database;
 
-    if (TRUE){
+    if (FALSE){
     	crearTablas();
     }
 
@@ -223,6 +223,7 @@ int main(int argc, char *argv[]) {
                             switch (opcionC) {
                                 case 1:
                                     // COMPRAR ARTICULOS
+                                	mostrarData();
                                     recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                                     sscanf(recvBuff, "%d",&id);
 
@@ -236,6 +237,7 @@ int main(int argc, char *argv[]) {
 
                                 case 2:
                                     // VER COMPRAS
+
                                 	mostrarVentasPorCliente(nom);
                                     break;
                                 case 0:
