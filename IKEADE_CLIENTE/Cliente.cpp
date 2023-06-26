@@ -11,6 +11,7 @@ using namespace std;
 void limpiarPantalla() {
     system("cls");
 }
+
 char menu(){
 	char opcion;
 	cout<<"1. Registrarse"<<endl;
@@ -18,11 +19,12 @@ char menu(){
 	cout<<"0. Salir"<<endl;
 	cout<<"Elige una opcion: ";
 	cin>>opcion;
+	cout<<opcion;
 	return opcion;
 	//limpiarPantalla();
 }
 char menuAdministrador(){
-	char opcion;
+	int opcionA;
 	cout<<"MENU ADMINISRADOR"<<endl;
 	cout<<"1. Crear articulo "<<endl;
 	cout<<"2. Borrar articulo "<<endl;
@@ -31,21 +33,25 @@ char menuAdministrador(){
 	cout<<"5. Listar ventas por cliente"<<endl;
 	cout<<"0. Salir"<<endl;
 	cout<<"Elige una opcion: ";
-	cin>>opcion;
-	return opcion;
+	cin>>opcionA;
+	return opcionA;
+
 }
 char menuCliente(){
-	char opcion;
+	int opcionC;
 	cout<<"MENU CLIENTE"<<endl;
 	cout<<"1.Comprar Articulos "<<endl;
 	cout<<"2.Ver carrito"<<endl;
 	cout<<"0. Salir"<<endl;
 	cout<<"Elige una opcion: ";
-	cin>>opcion;
-	return opcion;
+	cin>>opcionC;
+	return opcionC;
 }
 
 int main(int argc, char *argv[]) {
+
+	char nom[20],con[20],dni[20],tlf[20],art[20],cantidad[20];
+	int resul,id,stock,encontrado,nuevoPrecio,opcion,opcionA,opcionC,precio;
 
 	WSADATA wsaData;
 	SOCKET s;
@@ -89,10 +95,7 @@ int main(int argc, char *argv[]) {
 			ntohs(server.sin_port));
 
 	/*EMPIEZA EL PROGRAMA DEL CLIENTE*/
-	char opcion,opcionA,opcionC;
-	char nom[20],con[20],dni[20],tlf[20],art[20],cantidad[20];
-	int resul,id,stock,encontrado,nuevoPrecio,resultado_devolucion;
-	float precio;
+
 	do{
 		opcion = menu();
 		sprintf(sendBuff,"%d",opcion);
@@ -136,18 +139,50 @@ int main(int argc, char *argv[]) {
 			if(resul==1){
 
 					opcionA = menuAdministrador();
-					sprintf(sendBuff,"%c",opcionA);
+					sprintf(sendBuff,"%d",opcionA);
 					send(s, sendBuff, sizeof(sendBuff), 0);
 
 					switch(opcionA){
-						case '1':
+						case 1:
 							cout<<"Introduce un id: ";cin>>id;
 							cout<<"Introduce un nombre: ";cin>>art;
 							cout<<"Introduce un precio: ";cin>>precio;
 							cout<<"Introduce el stock: ";cin>>stock;
 							sprintf(sendBuff,"%d",id);
 							send(s, sendBuff, sizeof(sendBuff), 0);
-							/*
+
+							sprintf(sendBuff,"%s",art);
+							send(s, sendBuff, sizeof(sendBuff), 0);
+
+							sprintf(sendBuff,"%d",precio);
+							send(s, sendBuff, sizeof(sendBuff), 0);
+
+							sprintf(sendBuff,"%d",stock);
+							send(s, sendBuff, sizeof(sendBuff), 0);
+
+
+
+							break;
+						case 2:
+							cout<<"Introduce el id del articulo que quieres borrar: ";cin>>id;
+							sprintf(sendBuff,"%d",id);
+							send(s, sendBuff, sizeof(sendBuff), 0);
+
+
+							break;
+						case 3:
+							cout<<"Introduce el id del articulo que quieres modificar: " ;cin>>id;
+							sprintf(sendBuff,"%d",id);
+							send(s, sendBuff, sizeof(sendBuff), 0);
+
+
+							cout<<"Introduce un id: ";cin>>id;
+							cout<<"Introduce un nombre: ";cin>>art;
+							cout<<"Introduce un precio: ";cin>>precio;
+							cout<<"Introduce el stock: ";cin>>stock;
+							sprintf(sendBuff,"%d",id);
+							send(s, sendBuff, sizeof(sendBuff), 0);
+
 							sprintf(sendBuff,"%s",art);
 							send(s, sendBuff, sizeof(sendBuff), 0);
 
@@ -156,45 +191,13 @@ int main(int argc, char *argv[]) {
 
 							sprintf(sendBuff,"%d",stock);
 							send(s, sendBuff, sizeof(sendBuff), 0);
-							*/
 
-						//	limpiarPantalla();
-							break;
-						case '2':
-							cout<<"Introduce el id del articulo que quieres borrar": ;cin>>id;
-							sprintf(sendBuff,"%d",id);
-							send(s, sendBuff, sizeof(sendBuff), 0);
 
+
+						case 4:
 
 							break;
-						case '3':
-							cout<<"Introduce el id del articulo que quieres modificar": ;cin>>id;
-							sprintf(sendBuff,"%d",id);
-							send(s, sendBuff, sizeof(sendBuff), 0);
-
-
-							cout<<"Introduce un id: ";cin>>id;
-							cout<<"Introduce un nombre: ";cin>>art;
-							cout<<"Introduce un precio: ";cin>>precio;
-							cout<<"Introduce el stock: ";cin>>stock;
-							sprintf(sendBuff,"%d",id);
-							send(s, sendBuff, sizeof(sendBuff), 0);
-							/*
-							sprintf(sendBuff,"%s",art);
-							send(s, sendBuff, sizeof(sendBuff), 0);
-
-							sprintf(sendBuff,"%f",precio);
-							send(s, sendBuff, sizeof(sendBuff), 0);
-
-							sprintf(sendBuff,"%d",stock);
-							send(s, sendBuff, sizeof(sendBuff), 0);
-							*/
-
-
-						case '4':
-
-							break;
-						case '5':
+						case 5:
 							cout<<"Introduce el nombre de la persona que quieras ver sus compras: ";cin>>nom;
 							sprintf(sendBuff,"%s",nom);
 							send(s, sendBuff, sizeof(sendBuff), 0);
@@ -203,14 +206,14 @@ int main(int argc, char *argv[]) {
 							break;
 
 							break;
-						case '0': break;
+						case 0: break;
 						default: cout<<"La opcion no es correcta"<<endl;
 					}
 
 			}else if(resul ==2){
 
 					opcionC = menuCliente();
-					sprintf(sendBuff,"%c",opcionC);
+					sprintf(sendBuff,"%d",opcionC);
 					send(s, sendBuff, sizeof(sendBuff), 0);
 					switch(opcionC){
 						case '1':

@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
     Database* database;
 
         // Crea las tablas en la base de datos
-    if (TRUE){
+    if (FALSE){
     	crearTablas();
     }
 
@@ -96,10 +96,9 @@ int main(int argc, char *argv[]) {
     //crearTablaArticulo(database);
     iniciarLogger();
     loggear("Conexion realizada entre servidor y cliente\n");
-    char opcion,opcionC, opcionA;
+
     char nom[20], con[20],dni[20],tlf[20],art[20];
-    int resul,id,stock,nuevoPrecio, encontrado,cantidad;
-    float precio;
+    int resul,id,stock,cantidad,opcion,opcionC, opcionA,precio;
 
     do {
 
@@ -165,63 +164,71 @@ int main(int argc, char *argv[]) {
 
 
                         	recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-                        	sscanf(recvBuff, "%c", &opcionA);
-                        	printf(recvBuff);
+                        	sscanf(recvBuff, "%d", &opcionA);
+
                         switch(opcionA){
-                        	case '1':
-                        		printf(opcionA);
+
+                        	case 1:
+                        		printf("case 1");
 								recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-								sscanf(recvBuff, "%d",id);
-								loggear(id);
-								/*recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+								sscanf(recvBuff, "%d",&id);
+								printf("%d \n", id);
+								recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
 								sscanf( recvBuff, "%s",art);
+								printf("%s \n", art);
 								recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-								sscanf(recvBuff, "%f", precio);
+								sscanf(recvBuff, "%d", &precio);
+								printf("%d \n", precio);
 								recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-								sscanf( recvBuff, "%d", stock);*/
-								/*
-								 Articulo* a =crearArticulo(id, art, precio, stock);
-								 loggear("adios");
-								 insertarArticulo(a);
-								 loggear("Insertar art");
-								 */
-								continue;
-                        	case '2':
+								sscanf( recvBuff, "%d", &stock);
+								printf("%d \n", stock);
+
+								Articulo* a =crearArticulo(id, art, precio, stock);
+								imprimirArticulo(a);
+								insertarArticulo(a);
+
+								 printf("ADios");
+
+
+
+
+								break;
+                        	case 2:
                         		mostrarData();
                         		recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-                        		sprintf(id, "%d", recvBuff);
-                        		loggear(id);
-                        	//	eliminarArticulo(id);
+                        		sscanf(recvBuff, "%d",&id);
 
-                        		continue;
+                        		eliminarArticulo(id);
 
-                        	case '3':
+                        		break;
+
+                        	case 3:
                         		recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-                        	    sprintf(id, "%d", recvBuff);
+                        		sscanf(recvBuff, "%d",&id);
 
                         	    eliminarArticulo(id);
 
+                        	    recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+								sscanf(recvBuff, "%d",&id);
 
-								sscanf(recvBuff, "%d",id);
-								loggear(id);
 								recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
 								sscanf( recvBuff, "%s",art);
 								recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-								sscanf(recvBuff, "%f", precio);
+								sscanf(recvBuff, "%f", &precio);
 								recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-								sscanf( recvBuff, "%d", stock);
+								sscanf( recvBuff, "%d", &stock);
 
 
 
-								 Articulo* a =crearArticulo(id, art, precio, stock);
+								 Articulo* ar=crearArticulo(id, art, precio, stock);
 
-								 insertarArticulo(a);
+								 insertarArticulo(ar);
 
 
-                        	case'4':
+                        	case 4:
                         		mostrarVentas();
                         		break;
-                        	case '5':
+                        	case 5:
                         		recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                         		sprintf(nom, "%s", recvBuff);
 
@@ -231,7 +238,7 @@ int main(int argc, char *argv[]) {
                         		break;
 
 
-                        	case '0': break;
+                        	case 0: break;
 
                         	}
 
@@ -246,14 +253,14 @@ int main(int argc, char *argv[]) {
                         	recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                         	sscanf(recvBuff, "%d", &opcionC);
                             switch (opcionC) {
-                                case '1':
+                                case 1:
                                     // COMPRAR ARTICULOS
                                     recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-                                    sprintf(id, "%s", recvBuff);
+                                    sscanf(recvBuff, "%d",&id);
 
                                     recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
 
-                                    sscanf(recvBuff, "%d", cantidad);
+                                    sscanf(recvBuff, "%d", &cantidad);
 
                                     Venta* venta= crearVenta2(nom);
 
@@ -265,12 +272,12 @@ int main(int argc, char *argv[]) {
                                     break;
 
 
-                                case '2':
+                                case 2:
                                     // VER COMPRAS
                                 	mostrarVentasPorCliente(nom);
                                   //  imprimirCarrito(carrito);
                                     break;
-                                case '0':
+                                case 0:
                                     break;
                                 default:
                                     printf("La opcion no es correcta\n");
@@ -292,6 +299,7 @@ int main(int argc, char *argv[]) {
                     fin = 1;
                     printf("FIN DE LA CONEXIÓN");
                     break;
+
             }
 
 

@@ -1,6 +1,6 @@
 #include "Articulo.h"
 
-Articulo* crearArticulo(int id, const char* nombre, float precio, int stock) {
+Articulo* crearArticulo(int id, const char* nombre, int precio, int stock) {
 	Articulo* articulo = (Articulo*)malloc(sizeof(Articulo));
 	    articulo->id = id;
 	    articulo->nombre = strdup(nombre);
@@ -40,7 +40,7 @@ void eliminarArticuloPorId(Articulo** listaArticulos, int* cantidadArticulos, in
 }
 
 void imprimirArticulo(const Articulo* articulo) {
-	printf("ID: %d, Nombre: %s, Precio: %.2f, Stock: %d\n", articulo->id, articulo->nombre, articulo->precio, articulo->stock);
+	printf("ID: %d, Nombre: %s, Precio: %d, Stock: %d\n", articulo->id, articulo->nombre, articulo->precio, articulo->stock);
 }
 
 void liberarArticulo(Articulo* articulo) {

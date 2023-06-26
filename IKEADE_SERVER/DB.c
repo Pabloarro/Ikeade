@@ -297,7 +297,13 @@ int insertarArticulo(const Articulo* articulo){
 	        return 1;
 	    }
 
-	    char append[100] = "INSERT INTO articulos VALUES('";
+	    char append[100];
+	    imprimirArticulo(articulo);
+	    sprintf(append,"INSERT INTO articulos VALUES(%d,'%s',%d,%d);",articulo->id,articulo->nombre,articulo->precio,articulo->stock);
+
+	    printf(append);
+
+	    /*
 	    strcat(append, articulo->id);
 	    strcat(append, "','");
 	    strcat(append, articulo->nombre);
@@ -307,7 +313,7 @@ int insertarArticulo(const Articulo* articulo){
 	    strcat(append, "','");
 	    strcat(append, articulo->stock);
 	    strcat(append, "');");
-
+*/
 	    char sql[110];
 	    strcpy(sql, append);
 

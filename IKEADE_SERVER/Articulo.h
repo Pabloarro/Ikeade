@@ -8,11 +8,11 @@
 typedef struct{
     int id;
     char* nombre;
-    float precio;
+    int precio;
     int stock;
 } Articulo;
 
-Articulo* crearArticulo(int id, const char* nombre, float precio,int stock);
+Articulo* crearArticulo(int id, const char* nombre, int precio,int stock);
 void anyadirArticulo(Articulo** listaArticulos, int* cantidadArticulos, Articulo* nuevoArticulo);
 void modificarArticulo(Articulo* articulo, float precio);
 void eliminarArticuloPorId(Articulo** listaArticulos, int* cantidadArticulos, int id);
