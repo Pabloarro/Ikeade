@@ -30,7 +30,7 @@ char menuAdministrador(){
 	cout<<"4. Visualizar ventas"<<endl;
 	cout<<"5. Listar ventas por cliente"<<endl;
 	cout<<"0. Salir"<<endl;
-	cout<<"Elige una opci�n: ";
+	cout<<"Elige una opcion: ";
 	cin>>opcion;
 	return opcion;
 }
@@ -40,7 +40,7 @@ char menuCliente(){
 	cout<<"1.Comprar Articulos "<<endl;
 	cout<<"2.Ver carrito"<<endl;
 	cout<<"0. Salir"<<endl;
-	cout<<"Elige una opci�n: ";
+	cout<<"Elige una opcion: ";
 	cin>>opcion;
 	return opcion;
 }
@@ -53,8 +53,8 @@ int main(int argc, char *argv[]) {
 	char sendBuff[512], recvBuff[512];
 
 	/*
-	 * En sendBuff guardaremos lo que el cliente le env�a al servidor
-	 * En recvBuff guardaremos lo que el servidor le env�a al cliente
+	 * En sendBuff guardaremos lo que el cliente le envia al servidor
+	 * En recvBuff guardaremos lo que el servidor le envia al cliente
 	 * */
 	printf("\nInitialising Winsock...\n");
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
@@ -112,7 +112,7 @@ int main(int argc, char *argv[]) {
 			sprintf(sendBuff,"%s",nom);
 			send(s, sendBuff, sizeof(sendBuff), 0);
 			sprintf(sendBuff,"%s",con);
-			send(s, sendBuff, sizeof(sendBuff), 0); //Env�o la contrase�a al servidor
+			send(s, sendBuff, sizeof(sendBuff), 0);
 			sprintf(sendBuff,"%s",tlf);
 			send(s, sendBuff, sizeof(sendBuff), 0);
 			//limpiarPantalla();
@@ -125,11 +125,11 @@ int main(int argc, char *argv[]) {
 			cout<<nom;
 			cout<<con;
 			sprintf(sendBuff,"%s",nom);
-			send(s, sendBuff, sizeof(sendBuff), 0); //Env�o el nombre al servidor
+			send(s, sendBuff, sizeof(sendBuff), 0);
 			sprintf(sendBuff,"%s",con);
-			send(s, sendBuff, sizeof(sendBuff), 0); //Env�o la contrase�a al servidor
+			send(s, sendBuff, sizeof(sendBuff), 0);
 
-			recv(s, recvBuff, sizeof(recvBuff), 0); //Recibe el resultado del Inicio de Sesi�n
+			recv(s, recvBuff, sizeof(recvBuff), 0);
 			sscanf(recvBuff,"%d",&resul);
 
 
@@ -161,14 +161,14 @@ int main(int argc, char *argv[]) {
 						//	limpiarPantalla();
 							break;
 						case '2':
-							cout<<"Introduce el id del articulo que quieres borrar";cin>>id;
+							cout<<"Introduce el id del articulo que quieres borrar": ;cin>>id;
 							sprintf(sendBuff,"%d",id);
 							send(s, sendBuff, sizeof(sendBuff), 0);
 
 
 							break;
 						case '3':
-							cout<<"Introduce el id del articulo que quieres modificar";cin>>id;
+							cout<<"Introduce el id del articulo que quieres modificar": ;cin>>id;
 							sprintf(sendBuff,"%d",id);
 							send(s, sendBuff, sizeof(sendBuff), 0);
 
@@ -215,7 +215,7 @@ int main(int argc, char *argv[]) {
 					switch(opcionC){
 						case '1':
 
-						cout<<"ID del artículo: ";cin>>id;
+						cout<<"ID del articulo: ";cin>>id;
 						cout<<"Ingrese la cantidad: ";cin>>cantidad;
 						sprintf(sendBuff, "%s", id);
 						send(s, sendBuff, sizeof(sendBuff), 0);
@@ -226,7 +226,7 @@ int main(int argc, char *argv[]) {
 						sscanf(recvBuff, "%d", &resul);
 
 						if (resul == 1) {
-							cout<<"Compra realizada con éxito"<<endl;
+							cout<<"Compra realizada con exito"<<endl;
 						} else {
 							cout<<"No se pudo realizar la compra"<<endl;
 						}

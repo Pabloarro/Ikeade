@@ -17,7 +17,8 @@ int crearTablas() {
 
     char *sql = "DROP TABLE IF EXISTS Cliente;"
                 "CREATE TABLE Cliente(dni INT, Name TEXT,  Pass TEXT, telefono TEXT);"
-                "INSERT INTO Cliente VALUES(123, 'Alex',  '111','235689');";
+                "INSERT INTO Cliente VALUES(123, 'Alex',  '111','235689');"
+				"INSERT INTO Cliente VALUES(987654, 'Pablo', '123' ,'666666');";
 
     rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
 
@@ -33,7 +34,8 @@ int crearTablas() {
 
 	sql = "DROP TABLE IF EXISTS articulos;"
                 "CREATE TABLE articulos(id INT, nombre TEXT, precio INT, stock INT);"
-                "INSERT INTO articulos VALUES(01, 'Cama Malm', 250, 10);";
+            	"INSERT INTO articulos VALUES(1, 'Cama Malm', 250, 10);"
+				"INSERT INTO articulos VALUES(2, 'Mesa marron', 120, 13);";
 
     rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
 
@@ -49,7 +51,8 @@ int crearTablas() {
 
 	sql = "DROP TABLE IF EXISTS Venta;"
                 "CREATE TABLE Venta(id INT, cliente_nombre TEXT,  precio_total REAL);"
-                "INSERT INTO Venta VALUES(001, 'Alex', 250.50);";
+            	"INSERT INTO Venta VALUES(1, 'Alex', 250);"
+				"INSERT INTO Venta VALUES(2, 'Pablo', 120);";
 
     rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
 
