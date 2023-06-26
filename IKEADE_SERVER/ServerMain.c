@@ -214,7 +214,7 @@ int main(int argc, char *argv[]) {
 								recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
 								sscanf( recvBuff, "%s",art);
 								recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-								sscanf(recvBuff, "%f", &precio);
+								sscanf(recvBuff, "%d", &precio);
 								recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
 								sscanf( recvBuff, "%d", &stock);
 
@@ -261,13 +261,12 @@ int main(int argc, char *argv[]) {
                                     recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
 
                                     sscanf(recvBuff, "%d", &cantidad);
-
+                                    printf("ANTES DE CREAR\n");
                                     Venta* venta= crearVenta2(nom);
 
+                                    printf("DESPUES DE CREAR");
 
 
-                                  //  sprintf(sendBuff, "%d", resultado);
-                                    send(comm_socket, sendBuff, sizeof(sendBuff), 0);
 
                                     break;
 

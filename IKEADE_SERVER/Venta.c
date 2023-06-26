@@ -1,14 +1,14 @@
 #include "Venta.h"
+#include "Articulo.h"
 
-Venta* crearVenta(Cliente* cliente) {
+Venta* crearVenta(Cliente* cliente, Articulo* articulo, int precioTotal, int cantidad ) {
     Venta* nuevaVenta = (Venta*)malloc(sizeof(Venta));
     if (nuevaVenta == NULL) {
         return NULL;
     }
 
     nuevaVenta->cliente = cliente;
-
-
+    nuevaVenta->articulo = articulo;
     nuevaVenta->precioTotal = 0.0;
 
     return nuevaVenta;

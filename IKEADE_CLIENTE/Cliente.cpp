@@ -216,29 +216,22 @@ int main(int argc, char *argv[]) {
 					sprintf(sendBuff,"%d",opcionC);
 					send(s, sendBuff, sizeof(sendBuff), 0);
 					switch(opcionC){
-						case '1':
+						case 1:
 
 						cout<<"ID del articulo: ";cin>>id;
 						cout<<"Ingrese la cantidad: ";cin>>cantidad;
-						sprintf(sendBuff, "%s", id);
+						sprintf(sendBuff, "%d", id);
 						send(s, sendBuff, sizeof(sendBuff), 0);
-						sprintf(sendBuff, "%d", cantidad);
+						sprintf(sendBuff, "%s", cantidad);
 						send(s, sendBuff, sizeof(sendBuff), 0);
 
-						recv(s, recvBuff, sizeof(recvBuff), 0);
-						sscanf(recvBuff, "%d", &resul);
-
-						if (resul == 1) {
-							cout<<"Compra realizada con exito"<<endl;
-						} else {
-							cout<<"No se pudo realizar la compra"<<endl;
-						}
-
-						break;
 
 
 
-						case '2':
+
+
+
+						case 2:
 
 
 						    recv(s, recvBuff, sizeof(recvBuff), 0);
@@ -248,7 +241,7 @@ int main(int argc, char *argv[]) {
 
 						break;
 
-						case '0': break;
+						case 0: break;
 						default: cout<<"La opcion no es correcta"<<endl;
 					}
 

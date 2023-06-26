@@ -201,42 +201,48 @@ int mostrarVentasPorCliente(char* nombre) {
 
     return 0;
 }
-int eliminarArticulo(int id) {
-	sqlite3 *db;
-    char *err_msg = 0;
-
-    int rc = sqlite3_open("db.db", &db);
-
-    if (rc != SQLITE_OK) {
-
-        fprintf(stderr, "Cannot open database: %s\n",
-                sqlite3_errmsg(db));
-        sqlite3_close(db);
-
-        return 1;
-    }
-    char sql[100] = "DELETE FROM articulos WHERE id = '";
-        strcat(sql, id);
-        strcat(sql, "'");
 
 
-    rc = sqlite3_exec(db, sql, llamada, 0, &err_msg);
+int eliminarArticulo(int id){
+	 sqlite3* db;
+	    char* err_msg = 0;
 
-    if (rc != SQLITE_OK ) {
+	    int rc = sqlite3_open("db.db", &db);
 
-        fprintf(stderr, "Failed to select data\n");
-        fprintf(stderr, "SQL error: %s\n", err_msg);
+	    if (rc != SQLITE_OK) {
 
-        sqlite3_free(err_msg);
-        sqlite3_close(db);
+	        fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db));
+	        sqlite3_close(db);
 
-        return 1;
-    }
+	        return 1;
+	    }
 
-    sqlite3_close(db);
+	    char append[100];
 
-    return 0;
-}
+	    sprintf(append,"DELETE FROM articulos where id= %d",id);
+
+	    printf(append);
+
+
+	    char sql[110];
+	    strcpy(sql, append);
+
+	    rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
+
+	    if (rc != SQLITE_OK) {
+
+	        fprintf(stderr, "SQL error: %s\n", err_msg);
+
+	        sqlite3_free(err_msg);
+	        sqlite3_close(db);
+
+	        return 1;
+	    }
+
+	    sqlite3_close(db);
+
+	    return 0;
+	}
 
 int insertarCliente(const Cliente* cliente){
 	 sqlite3* db;
@@ -348,12 +354,9 @@ int insertarVenta(const Venta* venta){
 	        return 1;
 	    }
 
-	    char append[100] = "INSERT INTO Venta VALUES('";
-	    strcat(append, venta->cliente);
-	    strcat(append, "','");
-	    strcat(append, (int)venta->precioTotal);
-	    strcat(append, "');");
+	    char append[100];
 
+	   	    sprintf(append,"INSERT INTO Venta VALUES(%d,'%s');",venta->nombre,venta->precioTotal);
 
 	    char sql[110];
 	    strcpy(sql, append);
