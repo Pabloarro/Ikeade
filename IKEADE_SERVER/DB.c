@@ -221,9 +221,6 @@ int eliminarArticulo(int id){
 
 	    sprintf(append,"DELETE FROM articulos where id= %d",id);
 
-	    printf(append);
-
-
 	    char sql[110];
 	    strcpy(sql, append);
 
@@ -307,19 +304,6 @@ int insertarArticulo(const Articulo* articulo){
 	    imprimirArticulo(articulo);
 	    sprintf(append,"INSERT INTO articulos VALUES(%d,'%s',%d,%d);",articulo->id,articulo->nombre,articulo->precio,articulo->stock);
 
-	    printf(append);
-
-	    /*
-	    strcat(append, articulo->id);
-	    strcat(append, "','");
-	    strcat(append, articulo->nombre);
-	    strcat(append, "','");
-	    int precio=articulo->precio;
-	    strcat(append, precio);
-	    strcat(append, "','");
-	    strcat(append, articulo->stock);
-	    strcat(append, "');");
-*/
 	    char sql[110];
 	    strcpy(sql, append);
 
@@ -378,44 +362,6 @@ int insertarVenta(const Venta* venta){
 	    return 0;
 	}
 
-
-
-
-/*
-
-int procesarDevolucion(Database* database, const char* articulo, int cantidad) {
-    char query[100];
-    int result;
-    sprintf(query, "SELECT stock FROM articulos WHERE nombre='%s'", articulo);
-    sqlite3_stmt* stmt;
-    if (sqlite3_prepare_v2(database->db, query, -1, &stmt, NULL) != SQLITE_OK) {
-        fprintf(stderr, "Error al preparar la consulta: %s\n", sqlite3_errmsg(database->db));
-        return -1;
-    }
-
-    if (sqlite3_step(stmt) != SQLITE_ROW) {
-        sqlite3_finalize(stmt);
-        return 0;
-    }
-
-    int stock = sqlite3_column_int(stmt, 0);
-    sqlite3_finalize(stmt);
-
-
-    if (stock < cantidad) {
-        return 0;
-    }
-
-    sprintf(query, "UPDATE articulos SET stock = stock - %d WHERE nombre = '%s'", cantidad, articulo);
-    if (sqlite3_exec(database->db, query, NULL, NULL, NULL) != SQLITE_OK) {
-        fprintf(stderr, "Error al ejecutar la consulta: %s\n", sqlite3_errmsg(database->db));
-        return -1;
-    }
-
-    return 1;
-}
-
-*/
 int ComprobarInicioSes(char* nom, char* pass) {
     sqlite3* db;
     char* err_msg = 0;

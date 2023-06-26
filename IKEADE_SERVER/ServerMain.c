@@ -21,21 +21,8 @@ int main(int argc, char *argv[]) {
     struct sockaddr_in client;
     char sendBuff[512], recvBuff[512];
 
-   /* //Database* database = crearTablas();
-    // Crea la base de datos
-    Database* database = crearTablas();
-    if (database == NULL) {
-        printf("Error creating database\n");
-        return -1;
-    }
-
-
-    // Crea las demás tablas en la base de datos
-    crearTablas(database);
-*/
     Database* database;
 
-        // Crea las tablas en la base de datos
     if (TRUE){
     	crearTablas();
     }
@@ -89,11 +76,7 @@ int main(int argc, char *argv[]) {
 
     closesocket(conn_socket);
     int fin = 0;
-    //Database* database= createDatabase("db.db");
 
-
-    //crearTablaCliente(database);
-    //crearTablaArticulo(database);
     iniciarLogger();
     loggear("Conexion realizada entre servidor y cliente\n");
 
@@ -135,9 +118,6 @@ int main(int argc, char *argv[]) {
                 	  Cliente* c =crearCliente(dni, nom, con, tlf);
                 	  insertarCliente(c);
 
-                	  loggear("Hola");
-
-
                 	 continue;
                 case '2':
                 	//INICIAR SESION
@@ -160,9 +140,6 @@ int main(int argc, char *argv[]) {
                         send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                         loggear("Inicio Sesion ADMIN Exitoso\n");
 
-
-
-
                         	recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                         	sscanf(recvBuff, "%d", &opcionA);
 
@@ -184,13 +161,7 @@ int main(int argc, char *argv[]) {
 								printf("%d \n", stock);
 
 								Articulo* a =crearArticulo(id, art, precio, stock);
-								imprimirArticulo(a);
 								insertarArticulo(a);
-
-								 printf("ADios");
-
-
-
 
 								break;
                         	case 2:
@@ -218,8 +189,6 @@ int main(int argc, char *argv[]) {
 								recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
 								sscanf( recvBuff, "%d", &stock);
 
-
-
 								 Articulo* ar=crearArticulo(id, art, precio, stock);
 
 								 insertarArticulo(ar);
@@ -233,7 +202,6 @@ int main(int argc, char *argv[]) {
                         		sprintf(nom, "%s", recvBuff);
 
                         		mostrarVentasPorCliente(nom);
-
 
                         		break;
 
@@ -261,20 +229,14 @@ int main(int argc, char *argv[]) {
                                     recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                                     sscanf(recvBuff, "%d", &cantidad);
 
-                                    printf("ANTES DE CREAR\n");
                                     Venta* venta= crearVenta(id,nom,cantidad);
                                     insertarVenta(venta);
-                                    printf("DESPUES DE CREAR");
-
-
-
                                     break;
 
 
                                 case 2:
                                     // VER COMPRAS
                                 	mostrarVentasPorCliente(nom);
-                                  //  imprimirCarrito(carrito);
                                     break;
                                 case 0:
                                     break;
@@ -289,9 +251,6 @@ int main(int argc, char *argv[]) {
                         resul = 0;
                         loggear("Inicio Sesion Fallido\n");
                     }
-
-
-
 
                     continue;
                 case '0':

@@ -12,9 +12,7 @@ typedef struct {
 } Database;
 
 int crearTablas();
-/*Database* createDatabase(const char* filename);
-int crearTablaCliente(Database* database);
-int crearTablaArticulo(Database* database)*/
+int llamada(void *NotUsed, int argc, char **argv, char **azColName);
 int insertarCliente(const Cliente* cliente);
 int insertarArticulo(const Articulo* articulo);
 int eliminarArticulo(int id);
